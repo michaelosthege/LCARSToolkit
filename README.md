@@ -75,7 +75,17 @@ Each control has a SoundElement property that you can bind to a MediaElement to 
 <lcars:Button Content="Custom Beep" SoundElement="{StaticResource BeepSound}" Background="{StaticResource Orange}" />
 ```
 
+## Contributing
+Please do contribute! Ideally you'd fork this repo, make changes in your branch and submit a pull request.
 
+Here are some thigs on the ToDo list:
+* TextBox
+* PasswordBox
+* ComboBox
+* RadioButton
+* CheckBox
+
+Please open issues for other things you find relevant.
 
 ## Legal
 This repository is a non-commercial implementation of user controls to reproduce the look and feel of LCARS-GUIs. Due to its non-commercial nature, it is considered to be fair-use as per [17 U.S. Code § 107](https://www.law.cornell.edu/uscode/text/17/107).
