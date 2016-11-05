@@ -14,7 +14,6 @@ For many years people have built things that resemble the LCARS interface we all
 ## Usage
 You can either fork this repo directly, or [grab the package from NuGet](https://www.nuget.org/packages/LCARSToolkit.Controls/).
 
-### XAML
 Add a reference to the LCARSToolkit namespace:
 
 ```XAML
