@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Michael Osthege</authors>
+    <owners>Michael Osthege</owners>
+    <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/michaelosthege/LCARSToolkit</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>LCARSToolkit.Controls is a package of LCARS-like controls for Windows Universal</description>
+    <releaseNotes>Initial packaging: Elbo, LabeledButton, Button, Stump, Rectangle</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>UI LCARS LCARSToolkit UWP</tags>
+  </metadata>
+
+  <files>
+    <file src="$projectdir$\bin\$configuration$\id$.*" target="lib\uap" />
+    <file src="$projectdir$\bin\$configuration$\**\*.dll" target="lib\uap" />
+    <file src="$projectdir$\bin\$configuration$\**\*.pri" target="lib\uap" />
+    <file src="$projectdir$\bin\$configuration$\**\*.xbf" target="lib\uap\$id$" />
+    <file src="$projectdir$\bin\$configuration$\**\*.xr.xml" target="lib\uap\$id$" />
+  </files>
+
+  <!--
+  * download nuget.exe
+  * build project in Release configuration
+  * nuget.exe pack LCARSToolkit.Controls.csproj -Prop Configuration=release
+  -->
+</package>
