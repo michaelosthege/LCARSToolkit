@@ -7,9 +7,9 @@ Building Windows Universal apps for fancy IoT and home automation.
 ## Related Work
 For many years people have built things that resemble the LCARS interface we all know and love. The following example ([link to GitHub repo](https://github.com/DieterKoblenz/LCARS)) is on YouTube since 2010, long before IoT and home automation was a thing.
 
-<dl>
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/2vOvDFxn76g" frameborder="0" allowfullscreen></iframe>
-</dl>
+(image links to YouTube video)
+
+[![YouTube link to LCARS home automation](http://img.youtube.com/vi/2vOvDFxn76g/0.jpg)](http://www.youtube.com/watch?v=2vOvDFxn76g "Star Trek-like home automation")
 
 ## Usage
 You can either fork this repo directly, or [grab the package from NuGet](https://www.nuget.org/packages/LCARSToolkit.Controls/).
