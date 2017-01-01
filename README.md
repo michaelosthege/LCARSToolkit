@@ -72,7 +72,7 @@ Each control has a SoundElement property that you can bind to a MediaElement to 
     <MediaElement x:Key="Click01" Source="Resources/Sounds/Click01.wav" AutoPlay="False" />
 </Page.Resources>
 
-<lcars:Button Content="Custom Beep" SoundElement="{StaticResource BeepSound}" Background="{StaticResource Orange}" />
+<lcars:Button Content="Custom Beep" SoundElement="{StaticResource Beep01}" Background="{StaticResource Orange}" />
 ```
 
 ## Contributing
@@ -88,7 +88,7 @@ Here are some thigs on the ToDo list:
 Please open issues for other things you find relevant.
 
 ## Legal
-This repository is a non-commercial implementation of user controls to reproduce the look and feel of LCARS-GUIs. Due to its non-commercial nature, it is considered to be fair-use as per [17 U.S. Code ง 107](https://www.law.cornell.edu/uscode/text/17/107).
+This repository is a non-commercial implementation of user controls to reproduce the look and feel of LCARS-GUIs. Due to its non-commercial nature, it is considered to be fair-use as per [17 U.S. Code ยง 107](https://www.law.cornell.edu/uscode/text/17/107).
 
 ### Can I make apps for personal use?
 You are encouraged to build applications for personal use, for example IoT interfaces as seen in the video linked above.
