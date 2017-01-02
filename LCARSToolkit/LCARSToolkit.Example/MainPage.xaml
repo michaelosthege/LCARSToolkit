@@ -43,6 +43,7 @@
             <!--Content-->
             <Border Grid.Row="1" Grid.Column="1" BorderBrush="DarkGray" BorderThickness="1">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <lcars:Elbo Column="20" Bar="40" InnerArcRadius="10" Fill="{StaticResource Static}" />
                     <ComboBox x:Name="cb1" Header="Flow Direction" />
                     <ComboBox x:Name="cb2" Header="Stumps" />
                     <ComboBox x:Name="cb3" Header="Illumination" />

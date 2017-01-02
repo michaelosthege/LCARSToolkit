@@ -1,7 +1,7 @@
 ﻿{
   "dependencies": {
-    "LCARSToolkit.Controls": "1.0.6153.36111",
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0",
+    "LCARSToolkit.Controls": "1.0.6211.22583",
+    "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
     "TCD.Controls": "3.1.4"
   },
   "frameworks": {

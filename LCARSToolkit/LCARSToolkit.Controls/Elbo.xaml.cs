@@ -109,11 +109,15 @@ namespace LCARSToolkit.Controls
 
         private void UpdatePath()
         {
-            double big = InnerArcRadius + Bar;
+            double big = InnerArcRadius + Math.Min(Bar, Column);
             double small = InnerArcRadius;
 
             string geo = string.Empty;
-
+            // Geometry syntax ()
+            // m = start(x,y)
+            // a = arc(sizeXY, angle, isLargerThan180, sweepDirection, endXY)
+            // l = line(x, y)
+            // z = end
             switch (Corner)
             {
                 case Corner.TopLeft:
