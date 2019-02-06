@@ -119,8 +119,13 @@ namespace LCARSToolkit.Controls
 
         internal override void SetMasks(bool isLit)
         {
-            (this.GetTemplateChild("mask2") as Windows.UI.Xaml.Shapes.Rectangle).Fill = (isLit) ? new SolidColorBrush(Colors.Transparent) : new SolidColorBrush(Color.FromArgb(0x7F, 0x00, 0x00, 0x00));
-            (this.GetTemplateChild("mask") as Border).Background = (isLit) ? new SolidColorBrush(Colors.Transparent) : new SolidColorBrush(Color.FromArgb(0x7F, 0x00, 0x00, 0x00));
+            try
+            {
+                (this.GetTemplateChild("mask2") as Windows.UI.Xaml.Shapes.Rectangle).Fill = (isLit) ? new SolidColorBrush(Colors.Transparent) : new SolidColorBrush(Color.FromArgb(0x7F, 0x00, 0x00, 0x00));
+                (this.GetTemplateChild("mask") as Border).Background = (isLit) ? new SolidColorBrush(Colors.Transparent) : new SolidColorBrush(Color.FromArgb(0x7F, 0x00, 0x00, 0x00));
+            }
+            catch
+            { }            
         }
 
     }
