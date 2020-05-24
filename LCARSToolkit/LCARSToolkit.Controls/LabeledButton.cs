@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Documents;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Shapes;
 
 // The Templated Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234235
 
@@ -17,33 +11,35 @@ namespace LCARSToolkit.Controls
 {
     public sealed class LabeledButton : Button
     {
+        public LabeledButton()
+        {
+            this.DefaultStyleKey = typeof(LabeledButton);
+        }
 
         public FlowDirection Direction
         {
             get { return (FlowDirection)GetValue(DirectionProperty); }
             set { SetValue(DirectionProperty, value); }
         }
-        public static readonly DependencyProperty DirectionProperty = DependencyProperty.Register("Direction", typeof(FlowDirection), typeof(LabeledButton), new PropertyMetadata(FlowDirection.LeftToRight, DirectionChanged));
+        public static readonly DependencyProperty DirectionProperty = DependencyProperty.Register("Direction", typeof(FlowDirection), 
+            typeof(LabeledButton), new PropertyMetadata(FlowDirection.LeftToRight, DirectionChanged));
         
         public double SideWidth
         {
             get { return (double)GetValue(SideWidthProperty); }
             set { SetValue(SideWidthProperty, value); }
         }
-        public static readonly DependencyProperty SideWidthProperty = DependencyProperty.Register("SideWidth", typeof(double), typeof(LabeledButton), new PropertyMetadata(100));
+        public static readonly DependencyProperty SideWidthProperty = DependencyProperty.Register("SideWidth", typeof(double), 
+            typeof(LabeledButton), new PropertyMetadata(100));
         
         public string Label
         {
             get { return (string)GetValue(LabelProperty); }
             set { SetValue(LabelProperty, value); }
         }
-        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("Label", typeof(string), typeof(LabeledButton), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("Label", typeof(string), 
+            typeof(LabeledButton), new PropertyMetadata(string.Empty));
 
-
-        public LabeledButton()
-        {
-            this.DefaultStyleKey = typeof(LabeledButton);
-        }
         private static void DirectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             (d as LabeledButton).SetColumns();
@@ -74,6 +70,7 @@ namespace LCARSToolkit.Controls
                     break;
             }
         }
+
         private void SetColumnDefinitions(ColumnDefinitionCollection coldefs, IEnumerable<GridLength> widths)
         {
             coldefs.Clear();
