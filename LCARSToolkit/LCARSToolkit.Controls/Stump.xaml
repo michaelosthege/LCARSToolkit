@@ -1,18 +1,22 @@
-﻿<UserControl
-    x:Class="LCARSToolkit.Controls.Stump"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:LCARSToolkit.Controls"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    d:DesignHeight="300"
-    d:DesignWidth="400" VerticalAlignment="Top" HorizontalAlignment="Left">
+﻿<UserControl x:Class="LCARSToolkit.Controls.Stump"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:LCARSToolkit.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="300"
+             d:DesignWidth="400"
+             VerticalAlignment="Top"
+             HorizontalAlignment="Left"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
-    
+
     <Grid>
-        <Path x:Name="path" />
-        <Path x:Name="mask" Fill="#7F000000" Visibility="Collapsed" />
+        <Path x:Name="path" Fill="{Binding Fill}" />
+        <Path x:Name="mask"
+              Fill="#7F000000"
+              Visibility="Collapsed" />
 
         <!--<VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="IlluminationStates">
