@@ -19,6 +19,28 @@ namespace LCARSToolkit.Controls
 {
     public class Button : Windows.UI.Xaml.Controls.Button
     {
+
+        public Button()
+        {
+            this.DefaultStyleKey = typeof(Button);
+
+            this.SizeChanged += (s,e) => UpdateCorners();
+            this.Click += (s,e) => SoundElement?.Play();
+            // subscribe to the single, global FlashTimer such that everything flashes synchronously
+            Extensions.FlashTimer.Tick += FlashTimer_Tick;
+            this.Unloaded += Button_Unloaded;
+        }
+
+        private void FlashTimer_Tick(object sender, object e)
+        {
+            IsLit = (Illumination == Illumination.Flashing) ? !IsLit : (Illumination == Illumination.On);
+        }
+
+        private void Button_Unloaded(object sender, RoutedEventArgs e)
+        {
+            Extensions.FlashTimer.Tick -= FlashTimer_Tick;
+        }
+
         private bool _IsLit;
         public bool IsLit
         {
@@ -32,7 +54,7 @@ namespace LCARSToolkit.Controls
                 {
                     _IsLit = value;
                     SetMasks(value);
-                }                    
+                }
             }
         }
 
@@ -41,61 +63,65 @@ namespace LCARSToolkit.Controls
             get { return (Illumination)GetValue(IlluminationProperty); }
             set { SetValue(IlluminationProperty, value); }
         }
-        public static readonly DependencyProperty IlluminationProperty = DependencyProperty.Register("Illumination", typeof(Illumination), typeof(Button), new PropertyMetadata(Illumination.On));
-        
+
+        public static readonly DependencyProperty IlluminationProperty = 
+            DependencyProperty.Register("Illumination", typeof(Illumination), typeof(Button), 
+                new PropertyMetadata(Illumination.On));
+
         public Stumps Stumps
         {
             get { return (Stumps)GetValue(StumpsProperty); }
-            set
-            {
-                SetValue(StumpsProperty, value);
-                UpdateCorners();
-            }
+            set { SetValue(StumpsProperty, value); }
         }
-        public static readonly DependencyProperty StumpsProperty = DependencyProperty.Register("Stumps", typeof(Stumps), typeof(Button), new PropertyMetadata(Stumps.Both, StumpsChanged));
 
+        public static readonly DependencyProperty StumpsProperty = 
+            DependencyProperty.Register("Stumps", typeof(Stumps), typeof(Button), 
+                new PropertyMetadata(Stumps.Both, StumpsChanged));
+
+        private static void StumpsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as Button).UpdateCorners();
+        }
 
         public Corner ContentAlignment
         {
             get { return (Corner)GetValue(ContentAlignmentProperty); }
-            set
-            {
-                SetValue(ContentAlignmentProperty, value);
-                this.HorizontalContentAlignment = (value == Corner.TopLeft || value == Corner.BottomLeft) ? HorizontalAlignment.Left : HorizontalAlignment.Right;
-                this.VerticalContentAlignment = (value == Corner.TopLeft || value == Corner.TopRight) ? VerticalAlignment.Top : VerticalAlignment.Bottom;
-            }
+            set { SetValue(ContentAlignmentProperty, value); }
         }
-        public static readonly DependencyProperty ContentAlignmentProperty = DependencyProperty.Register("ContentAlignment", typeof(Corner), typeof(Button), new PropertyMetadata(null));
 
-        public CornerRadius CornerRadius
+        public static readonly DependencyProperty ContentAlignmentProperty = 
+            DependencyProperty.Register("ContentAlignment", typeof(Corner), typeof(Button), new PropertyMetadata(Corner.BottomLeft,
+                ContentAlignmentChanged));
+
+        private static void ContentAlignmentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            Button btn = d as Button;
+            Corner value = btn.ContentAlignment;
+            btn.HorizontalContentAlignment = (value == Corner.TopLeft || value == Corner.BottomLeft) ? HorizontalAlignment.Left : HorizontalAlignment.Right;
+            btn.VerticalContentAlignment = (value == Corner.TopLeft || value == Corner.TopRight) ? VerticalAlignment.Top : VerticalAlignment.Bottom;
+        }
+
+        public new CornerRadius CornerRadius
         {
             get { return (CornerRadius)GetValue(CornerRadiusProperty); }
             set { SetValue(CornerRadiusProperty, value); }
         }
-        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(Button), new PropertyMetadata(null));
-        
+
+        public static new readonly DependencyProperty CornerRadiusProperty = 
+            DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(Button), 
+                new PropertyMetadata(null));
+
         public MediaElement SoundElement
         {
             get { return (MediaElement)GetValue(SoundElementProperty); }
             set { SetValue(SoundElementProperty, value); }
         }
-        public static readonly DependencyProperty SoundElementProperty = DependencyProperty.Register(nameof(SoundElement), typeof(MediaElement), typeof(Button), new PropertyMetadata(null));
+        public static readonly DependencyProperty SoundElementProperty = 
+            DependencyProperty.Register(nameof(SoundElement), typeof(MediaElement), typeof(Button), 
+                new PropertyMetadata(null));
 
-        public Button()
-        {
-            this.DefaultStyleKey = typeof(Button);
-            this.SizeChanged += delegate { UpdateCorners(); };
-            this.Click += delegate
-            {
-                SoundElement?.Play();
-            };
-            // subscribe to the single, global FlashTimer such that everything flashes synchronously
-            Extensions.FlashTimer.Tick += delegate { IsLit = (Illumination == Illumination.Flashing) ? !IsLit : (Illumination == Illumination.On); };
-        }
-        private static void StumpsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            (d as Button).UpdateCorners();
-        }
+
+
         internal virtual void SetMasks(bool isLit)
         {
             try
@@ -113,11 +139,11 @@ namespace LCARSToolkit.Controls
             {
                 case Stumps.None:
                     this.CornerRadius = new CornerRadius(0);
-                    this.Padding = new Thickness(5,0,5,0);
+                    this.Padding = new Thickness(5, 0, 5, 0);
                     break;
                 case Stumps.Left:
                     this.CornerRadius = new CornerRadius(radius, 0, 0, radius);
-                    this.Padding = new Thickness(radius,0,5,0);
+                    this.Padding = new Thickness(radius, 0, 5, 0);
                     break;
                 case Stumps.Right:
                     this.CornerRadius = new CornerRadius(0, radius, radius, 0);
@@ -129,5 +155,8 @@ namespace LCARSToolkit.Controls
                     break;
             }
         }
+
+        
+
     }
 }
