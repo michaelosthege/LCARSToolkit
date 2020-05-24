@@ -1,18 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -20,6 +11,20 @@ namespace LCARSToolkit.Controls
 {
     public sealed partial class Elbo : UserControl
     {
+
+        public Elbo()
+        {
+            this.InitializeComponent();
+            this.DataContext = this;
+            Extensions.FlashTimer.Tick += FlashTimer_Tick;
+            Unloaded += (s, e) => { Extensions.FlashTimer.Tick -= FlashTimer_Tick; };
+        }
+
+        private void FlashTimer_Tick(object sender, object e)
+        {
+            IsLit = (Illumination == Illumination.Flashing) ? !IsLit : (Illumination == Illumination.On);
+        }
+
         private bool _IsLit;
         public bool IsLit
         {
@@ -42,69 +47,58 @@ namespace LCARSToolkit.Controls
             get { return (Illumination)GetValue(IlluminationProperty); }
             set { SetValue(IlluminationProperty, value); }
         }
-        public static readonly DependencyProperty IlluminationProperty = DependencyProperty.Register("Illumination", typeof(Illumination), typeof(Elbo), new PropertyMetadata(Illumination.On));
+
+        public static readonly DependencyProperty IlluminationProperty = DependencyProperty.Register("Illumination", 
+            typeof(Illumination), typeof(Elbo), new PropertyMetadata(Illumination.On));
 
         public double Bar
         {
             get { return (double)GetValue(BarProperty); }
-            set
-            {
-                SetValue(BarProperty, value);
-                UpdatePath();
-            }
+            set { SetValue(BarProperty, value); }
         }
-        public static readonly DependencyProperty BarProperty = DependencyProperty.Register("Bar", typeof(double), typeof(Elbo), new PropertyMetadata(null));
 
+        public static readonly DependencyProperty BarProperty = DependencyProperty.Register("Bar", typeof(double), 
+            typeof(Elbo), new PropertyMetadata(null,UpdatePathCallback));
 
         public double Column
         {
             get { return (double)GetValue(ColumnProperty); }
-            set
-            {
-                SetValue(ColumnProperty, value);
-                UpdatePath();
-            }
+            set { SetValue(ColumnProperty, value); }
         }
-        public static readonly DependencyProperty ColumnProperty = DependencyProperty.Register("Column", typeof(double), typeof(Elbo), new PropertyMetadata(null));
 
+        public static readonly DependencyProperty ColumnProperty = DependencyProperty.Register("Column", 
+            typeof(double), typeof(Elbo), new PropertyMetadata(null,UpdatePathCallback));
 
         public double InnerArcRadius
         {
             get { return (double)GetValue(InnerArcRadiusProperty); }
-            set
-            {
-                SetValue(InnerArcRadiusProperty, value);
-                UpdatePath();
-            }
+            set { SetValue(InnerArcRadiusProperty, value); }
         }
-        public static readonly DependencyProperty InnerArcRadiusProperty = DependencyProperty.Register("InnerArcRadius", typeof(double), typeof(Elbo), new PropertyMetadata(null));
+
+        public static readonly DependencyProperty InnerArcRadiusProperty = DependencyProperty.Register("InnerArcRadius", typeof(double), 
+            typeof(Elbo), new PropertyMetadata(null,UpdatePathCallback));
 
         public Corner Corner
         {
             get { return (Corner)GetValue(CornerProperty); }
-            set
-            {
-                SetValue(CornerProperty, value);
-                UpdatePath();
-            }
+            set { SetValue(CornerProperty, value); }
         }
-        public static readonly DependencyProperty CornerProperty = DependencyProperty.Register("Corner", typeof(Corner), typeof(Elbo), new PropertyMetadata(Corner.TopLeft));
 
+        public static readonly DependencyProperty CornerProperty = DependencyProperty.Register("Corner", typeof(Corner), 
+            typeof(Elbo), new PropertyMetadata(Corner.TopLeft,UpdatePathCallback));
 
         public Brush Fill
         {
-            get { return path.Fill; }
-            set { path.Fill = value; }
+            get { return (Brush)GetValue(FillProperty); }
+            set { SetValue(FillProperty, value); }
         }
-        public static readonly DependencyProperty FillProperty = DependencyProperty.Register("Fill", typeof(Brush), typeof(Elbo), new PropertyMetadata(null));
 
+        public static readonly DependencyProperty FillProperty = DependencyProperty.Register("Fill", typeof(Brush), 
+            typeof(Elbo), new PropertyMetadata(new SolidColorBrush(Colors.White)));
 
-
-        public Elbo()
+        private static void UpdatePathCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            this.InitializeComponent();
-            this.DataContext = this;
-            Extensions.FlashTimer.Tick += delegate { IsLit = (Illumination == Illumination.Flashing) ? !IsLit : (Illumination == Illumination.On); };
+            (d as Elbo).UpdatePath();
         }
 
         private void UpdatePath()
