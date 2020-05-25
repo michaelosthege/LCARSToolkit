@@ -1,19 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -21,6 +9,19 @@ namespace LCARSToolkit.Controls
 {
     public sealed partial class Stump : UserControl
     {
+
+        public Stump()
+        {
+            this.InitializeComponent();
+            Extensions.FlashTimer.Tick += FlashTimer_Tick;
+            Unloaded += (s, e) => { Extensions.FlashTimer.Tick -= FlashTimer_Tick; };
+        }
+
+        private void FlashTimer_Tick(object sender, object e)
+        {
+            IsLit = (Illumination == Illumination.Flashing) ? !IsLit : (Illumination == Illumination.On);
+        }
+
         private bool _IsLit;
         public bool IsLit
         {
@@ -43,60 +44,49 @@ namespace LCARSToolkit.Controls
             get { return (Illumination)GetValue(IlluminationProperty); }
             set { SetValue(IlluminationProperty, value); }
         }
-        public static readonly DependencyProperty IlluminationProperty = DependencyProperty.Register("Illumination", typeof(Illumination), typeof(Stump), new PropertyMetadata(Illumination.On));
 
-
+        public static readonly DependencyProperty IlluminationProperty = DependencyProperty.Register("Illumination", 
+            typeof(Illumination), typeof(Stump), new PropertyMetadata(Illumination.On));
 
         public double Diameter
         {
             get { return (double)GetValue(DiameterProperty); }
-            set
-            {
-                SetValue(DiameterProperty, value);
-                UpdatePath();
-            }
+            set { SetValue(DiameterProperty, value); }
         }
-        public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register("Diameter", typeof(double), typeof(Elbo), new PropertyMetadata(.0));
 
+        public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register("Diameter", typeof(double), 
+            typeof(Stump), new PropertyMetadata(.0,PathUpdateCallback));
+
+        private static void PathUpdateCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as Stump).UpdatePath();
+        }
 
         public double Length
         {
             get { return (double)GetValue(LengthProperty); }
-            set
-            {
-                SetValue(LengthProperty, value);
-                UpdatePath();
-            }
+            set { SetValue(LengthProperty, value); }
         }
-        public static readonly DependencyProperty LengthProperty = DependencyProperty.Register("Length", typeof(double), typeof(Elbo), new PropertyMetadata(.0));
 
+        public static readonly DependencyProperty LengthProperty = DependencyProperty.Register("Length", typeof(double),
+            typeof(Stump), new PropertyMetadata(.0, PathUpdateCallback));
 
         public Direction Direction
         {
             get { return (Direction)GetValue(DirectionProperty); }
-            set
-            {
-                SetValue(DirectionProperty, value);
-                UpdatePath();
-            }
+            set { SetValue(DirectionProperty, value); }
         }
-        public static readonly DependencyProperty DirectionProperty = DependencyProperty.Register("Direction", typeof(Direction), typeof(Elbo), new PropertyMetadata(Direction.Right));
 
-        
+        public static readonly DependencyProperty DirectionProperty = DependencyProperty.Register("Direction", typeof(Direction), 
+            typeof(Stump), new PropertyMetadata(Direction.Right,PathUpdateCallback));
+                
         public Brush Fill
         {
-            get { return path.Fill; }
-            set { path.Fill = value; }
-        }
-        
-        public static readonly DependencyProperty FillProperty = DependencyProperty.Register("Fill", typeof(Brush), typeof(Elbo), new PropertyMetadata(null));
-
-
-        public Stump()
-        {
-            this.InitializeComponent();
-            Extensions.FlashTimer.Tick += delegate { IsLit = (Illumination == Illumination.Flashing) ? !IsLit : (Illumination == Illumination.On); };
-        }
+            get { return (Brush)GetValue(FillProperty); }
+            set { SetValue(FillProperty, value); }
+        }        
+        public static readonly DependencyProperty FillProperty = DependencyProperty.Register("Fill", typeof(Brush),
+            typeof(Stump), new PropertyMetadata(null));
 
         private void UpdatePath()
         {

@@ -7,10 +7,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400">
+    d:DesignWidth="400"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
     <Grid>
-        <Rectangle x:Name="rect" />
+        <Rectangle x:Name="rect" Fill="{Binding Fill}" />
         <Rectangle x:Name="mask" Fill="#7F000000" Visibility="Collapsed" />
     </Grid>
 </UserControl>
