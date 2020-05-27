@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{79DC02CF-08DD-470E-B2A0-21D09B842F49}"
 	ProjectSection(SolutionItems) = preProject
@@ -54,6 +54,8 @@ Global
 		{BA43E597-C0BE-4FAD-8D73-4B4ED8FA4C4F}.Debug|x86.Build.0 = Debug|x86
 		{BA43E597-C0BE-4FAD-8D73-4B4ED8FA4C4F}.Debug|x86.Deploy.0 = Debug|x86
 		{BA43E597-C0BE-4FAD-8D73-4B4ED8FA4C4F}.Release|Any CPU.ActiveCfg = Release|x86
+		{BA43E597-C0BE-4FAD-8D73-4B4ED8FA4C4F}.Release|Any CPU.Build.0 = Release|x86
+		{BA43E597-C0BE-4FAD-8D73-4B4ED8FA4C4F}.Release|Any CPU.Deploy.0 = Release|x86
 		{BA43E597-C0BE-4FAD-8D73-4B4ED8FA4C4F}.Release|ARM.ActiveCfg = Release|ARM
 		{BA43E597-C0BE-4FAD-8D73-4B4ED8FA4C4F}.Release|ARM.Build.0 = Release|ARM
 		{BA43E597-C0BE-4FAD-8D73-4B4ED8FA4C4F}.Release|ARM.Deploy.0 = Release|ARM
@@ -66,5 +68,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {72194C60-A64E-4D88-83CF-7B3BF29695A5}
 	EndGlobalSection
 EndGlobal
