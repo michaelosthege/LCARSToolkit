@@ -137,7 +137,7 @@
       <Version>1.0.6211.22583</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>5.2.2</Version>
+      <Version>5.2.4</Version>
     </PackageReference>
     <PackageReference Include="TCD.Controls">
       <Version>3.1.4</Version>
