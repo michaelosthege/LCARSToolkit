@@ -1,9 +1,16 @@
-﻿using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Markup;
-using Windows.UI.Xaml.Media;
+﻿// using Windows.UI.Xaml;
+// using Windows.UI.Xaml.Controls;
+// using Windows.UI.Xaml.Markup;
+// using Windows.UI.Xaml.Media;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
+
+using System.IO;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Markup;
+using System.Windows.Media;
 
 namespace LCARSToolkit.Controls
 {
@@ -90,25 +97,66 @@ namespace LCARSToolkit.Controls
 
         private void UpdatePath()
         {
-            string geo = string.Empty;
-
+            var figure = new PathFigure();
+            path.Data = new PathGeometry
+            {
+                Figures = {figure}
+            };
+            mask.Data = new PathGeometry
+            {
+                Figures = {figure}
+            };
             switch (Direction)
             {
                 case Direction.Right:
-                    geo = $"M0,0 l{Length},0 a {Diameter/2},{Diameter/2} 180 0 1 0,{Diameter} l {-Length},0 z";
+                    figure.StartPoint = new Point(0, 0);
+                    figure.Segments.Add(new LineSegment{Point = new Point(Length, 0)});
+                    figure.Segments.Add(new ArcSegment
+                    {
+                        Size = new Size(Diameter/2, Diameter/2),
+                        Point = new Point(Length, Diameter),
+                        SweepDirection = SweepDirection.Clockwise
+                    });
+                    figure.Segments.Add(new LineSegment{Point = new Point(0, Diameter)});
+                    figure.Segments.Add(new LineSegment{Point = new Point(0, 0)});
                     break;
                 case Direction.Left:
-                    geo = $"M{Length+Diameter/2},0 l{-Length},0 a {Diameter / 2},{Diameter / 2} 180 0 0 0,{Diameter} l {Length},0 z";
+                    figure.StartPoint = new Point(Length + Diameter/2, 0);
+                    figure.Segments.Add(new LineSegment{Point = new Point(Diameter/2, 0)});
+                    figure.Segments.Add(new ArcSegment
+                    {
+                        Size = new Size(Diameter/2, Diameter/2),
+                        Point = new Point(Diameter/2, Diameter),
+                        SweepDirection = SweepDirection.Counterclockwise
+                    });
+                    figure.Segments.Add(new LineSegment{Point = new Point(Length + Diameter/2, Diameter)});
+                    figure.Segments.Add(new LineSegment{Point = new Point(Length + Diameter/2, 0)});
                     break;
                 case Direction.Up:
-                    geo = $"M0,{Length+Diameter/2} l0,{-Length} a {Diameter / 2},{Diameter / 2} 180 0 0 {Diameter},0 l 0,{Length} z";
+                    figure.StartPoint = new Point(0, Length + Diameter/2);
+                    figure.Segments.Add(new LineSegment{Point = new Point(0, Diameter/2)});
+                    figure.Segments.Add(new ArcSegment
+                    {
+                        Size = new Size(Diameter/2, Diameter/2),
+                        Point = new Point(Diameter, Diameter/2),
+                        SweepDirection = SweepDirection.Clockwise
+                    });
+                    figure.Segments.Add(new LineSegment{Point = new Point(Diameter, Length + Diameter/2)});
+                    figure.Segments.Add(new LineSegment{Point = new Point(0, Length + Diameter/2)});
                     break;
                 case Direction.Down:
-                    geo = $"M0,0 l0,{Length} a {Diameter / 2},{Diameter / 2} 180 0 1 {Diameter},0 l 0,{-Length} z";
+                    figure.StartPoint = new Point(0, 0);
+                    figure.Segments.Add(new LineSegment{Point = new Point(0, Length)});
+                    figure.Segments.Add(new ArcSegment
+                    {
+                        Size = new Size(Diameter/2, Diameter/2),
+                        Point = new Point(Diameter, Length),
+                        SweepDirection = SweepDirection.Counterclockwise
+                    });
+                    figure.Segments.Add(new LineSegment{Point = new Point(Diameter, 0)});
+                    figure.Segments.Add(new LineSegment{Point = new Point(0, 0)});
                     break;
             }
-            path.Data = (Geometry)XamlReader.Load($"<Geometry xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'>{geo}</Geometry>");
-            mask.Data = (Geometry)XamlReader.Load($"<Geometry xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'>{geo}</Geometry>");
         }
     }
 }

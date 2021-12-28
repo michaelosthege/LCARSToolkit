@@ -1,9 +1,17 @@
 ﻿using System;
-using Windows.UI;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Markup;
-using Windows.UI.Xaml.Media;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Markup;
+using System.Windows.Media;
+
+// using Windows.UI;
+// using Windows.UI.Xaml;
+// using Windows.UI.Xaml.Controls;
+// using Windows.UI.Xaml.Markup;
+// using Windows.UI.Xaml.Media;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -58,7 +66,7 @@ namespace LCARSToolkit.Controls
         }
 
         public static readonly DependencyProperty BarProperty = DependencyProperty.Register("Bar", typeof(double), 
-            typeof(Elbo), new PropertyMetadata(null,UpdatePathCallback));
+            typeof(Elbo), new PropertyMetadata(0.0,UpdatePathCallback));
 
         public double Column
         {
@@ -67,7 +75,7 @@ namespace LCARSToolkit.Controls
         }
 
         public static readonly DependencyProperty ColumnProperty = DependencyProperty.Register("Column", 
-            typeof(double), typeof(Elbo), new PropertyMetadata(null,UpdatePathCallback));
+            typeof(double), typeof(Elbo), new PropertyMetadata(0.0,UpdatePathCallback));
 
         public double InnerArcRadius
         {
@@ -76,7 +84,7 @@ namespace LCARSToolkit.Controls
         }
 
         public static readonly DependencyProperty InnerArcRadiusProperty = DependencyProperty.Register("InnerArcRadius", typeof(double), 
-            typeof(Elbo), new PropertyMetadata(null,UpdatePathCallback));
+            typeof(Elbo), new PropertyMetadata(0.0,UpdatePathCallback));
 
         public Corner Corner
         {
@@ -103,32 +111,91 @@ namespace LCARSToolkit.Controls
 
         private void UpdatePath()
         {
-            double big = InnerArcRadius + Math.Min(Bar, Column);
-            double small = InnerArcRadius;
+            var big = InnerArcRadius + Math.Min(Bar, Column);
+            var small = InnerArcRadius;
+            var height = Math.Max(big, Bar + small);
+            var width = Math.Max(big, Column + small);
 
-            string geo = string.Empty;
-            // Geometry syntax ()
-            // m = start(x,y)
-            // a = arc(sizeXY, angle, isLargerThan180, sweepDirection, endXY)
-            // l = line(x, y)
-            // z = end
-            switch (Corner)
+            var figure = new PathFigure();
+            path.Data = new PathGeometry
             {
-                case Corner.TopLeft:
-                    geo = $"M0,{Bar+small} l{Column},0 a {small},{small} 90 0 1 {small},{-small} l 0,{-Bar} l {-Column - small + big},0 a {big},{big} 90 0 0 {-big},{big} z";
-                    break;
-                case Corner.TopRight:
-                    geo = $"M{Column + small},{Bar + small} l{-Column},0 a {small},{small} 90 0 0 {-small},{-small} l 0,{-Bar} l {Column + small - big},0 a {big},{big} 90 0 1 {big},{big} z";
-                    break;
-                case Corner.BottomRight:
-                    geo = $"M{Column+small},0 l{-Column},0 a {small},{small} 90 0 1 {-small},{small} l 0,{Bar} l {Column + small - big},0 a {big},{big} 90 0 0 {big},{-big} z";
-                    break;
-                case Corner.BottomLeft:
-                    geo = $"M0,0 l{Column},0 a {small},{small} 90 0 0 {small},{small} l 0,{Bar} l {-Column - small + big},0 a {big},{big} 90 0 1 {-big},{-big} z";
-                    break;
-            }
-            path.Data = (Geometry)XamlReader.Load($"<Geometry xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'>{geo}</Geometry>");
-            mask.Data = (Geometry)XamlReader.Load($"<Geometry xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'>{geo}</Geometry>");
+                Figures = {figure}
+            };
+            mask.Data = new PathGeometry
+            {
+                Figures = {figure}
+            };
+
+            var points = Corner switch
+            {
+                Corner.TopLeft => new[]
+                {
+                    new Point(0, big),
+                    new Point(0, height),
+                    new Point(Column, height),
+                    new Point(Column, small + Bar),
+                    new Point(Column + small, Bar),
+                    new Point(width, Bar),
+                    new Point(width, 0),
+                    new Point(big, 0)
+                },
+                Corner.TopRight => new[]
+                {
+                    new Point(width - big, 0),
+                    new Point(0, 0),
+                    new Point(0, Bar),
+                    new Point(width - (Column + small), Bar),
+                    new Point(width - Column, Bar + small),
+                    new Point(width - Column, height),
+                    new Point(width, height),
+                    new Point(width, big)
+                },
+                Corner.BottomRight => new[]
+                {
+                    new Point(width, height - big),
+                    new Point(width, 0),
+                    new Point(width - Column, 0),
+                    new Point(width - Column, height - (Bar + small)),
+                    new Point(width - (Column + small), height - Bar),
+                    new Point(0, height - Bar),
+                    new Point(0, height),
+                    new Point(width - big, height)
+                },
+                Corner.BottomLeft => new[]
+                {
+                    new Point(big, height),
+                    new Point(width, height),
+                    new Point(width, height - Bar),
+                    new Point(Column + small, height - Bar),
+                    new Point(Column, height - (Bar + small)),
+                    new Point(Column, 0),
+                    new Point(0, 0),
+                    new Point(0, height - big)
+                },
+                _ => Array.Empty<Point>()
+            };
+
+            if (!points.Any()) return;
+
+            figure.StartPoint = points[0];
+            figure.Segments.Add(new LineSegment {Point = points[1]});
+            figure.Segments.Add(new LineSegment {Point = points[2]});
+            figure.Segments.Add(new LineSegment {Point = points[3]});
+            figure.Segments.Add(new ArcSegment
+            {
+                Size = new Size(small, small),
+                Point = points[4],
+                SweepDirection = SweepDirection.Clockwise
+            });
+            figure.Segments.Add(new LineSegment {Point = points[5]});
+            figure.Segments.Add(new LineSegment {Point = points[6]});
+            figure.Segments.Add(new LineSegment {Point = points[7]});
+            figure.Segments.Add(new ArcSegment
+            {
+                Size = new Size(big, big), 
+                Point = points[0],
+                SweepDirection = SweepDirection.Counterclockwise
+            });
         }
     }
 }

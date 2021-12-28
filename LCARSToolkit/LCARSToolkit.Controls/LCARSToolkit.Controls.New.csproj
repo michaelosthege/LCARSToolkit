@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0-windows</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <AssemblyName>LCARSToolkit.Controls</AssemblyName>
+        <RootNamespace>LCARSToolkit.Controls</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="Properties\AssemblyInfo.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="LabeledButton.cs" />
+      <None Include="LabeledButton.cs" />
+    </ItemGroup>
+
+</Project>

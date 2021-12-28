@@ -3,11 +3,11 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:LCARSToolkit.Example"
-    RequestedTheme="Light">
+    StartupUri="MainPage.xaml">
 
     <Application.Resources>
         <!--App-wide setting of the desired font family-->
-        <FontFamily x:Key="LCARS">Haettenschweiler</FontFamily>
+        <FontFamily x:Key="LCARS">Swiss921 BT</FontFamily>
         <!--the 'real' LCARS font is called Swiss 911 Ultra Compressed. Unfortunately it is copyrighted. But if you do have a copy:-->
         <!--<FontFamily x:Key="LCARS">Resources/Swiss 911 Ultra Compressed.ttf#LCARS</FontFamily>-->
 

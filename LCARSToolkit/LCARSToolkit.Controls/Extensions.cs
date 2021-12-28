@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
+using System.Windows.Threading;
+
+// using Windows.Foundation;
+// using Windows.UI.Xaml;
+// using Windows.UI.Xaml.Controls;
+// using Windows.UI.Xaml.Media;
 
 namespace LCARSToolkit.Controls
 {

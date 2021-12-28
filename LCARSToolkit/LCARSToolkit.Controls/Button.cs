@@ -4,20 +4,23 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.UI;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Documents;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
+// using System.Runtime.InteropServices.WindowsRuntime;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+// using Windows.UI;
+// using Windows.UI.Xaml;
+// using Windows.UI.Xaml.Controls;
+// using Windows.UI.Xaml.Data;
+// using Windows.UI.Xaml.Documents;
+// using Windows.UI.Xaml.Input;
+// using Windows.UI.Xaml.Media;
 
 // The Templated Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234235
 
 namespace LCARSToolkit.Controls
 {
-    public class Button : Windows.UI.Xaml.Controls.Button
+    public class Button : System.Windows.Controls.Button
     {
 
         public Button()
@@ -101,13 +104,13 @@ namespace LCARSToolkit.Controls
             btn.VerticalContentAlignment = (value == Corner.TopLeft || value == Corner.TopRight) ? VerticalAlignment.Top : VerticalAlignment.Bottom;
         }
 
-        public new CornerRadius CornerRadius
+        public CornerRadius CornerRadius
         {
             get { return (CornerRadius)GetValue(CornerRadiusProperty); }
             set { SetValue(CornerRadiusProperty, value); }
         }
 
-        public static new readonly DependencyProperty CornerRadiusProperty = 
+        public static readonly DependencyProperty CornerRadiusProperty = 
             DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(Button), 
                 new PropertyMetadata(null));
 

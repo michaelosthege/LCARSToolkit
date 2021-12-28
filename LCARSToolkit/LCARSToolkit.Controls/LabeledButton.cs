@@ -1,9 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Windows.UI;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+
+// using Windows.UI;
+// using Windows.UI.Xaml;
+// using Windows.UI.Xaml.Controls;
+// using Windows.UI.Xaml.Media;
 
 // The Templated Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234235
 
@@ -30,7 +34,7 @@ namespace LCARSToolkit.Controls
             set { SetValue(SideWidthProperty, value); }
         }
         public static readonly DependencyProperty SideWidthProperty = DependencyProperty.Register("SideWidth", typeof(double), 
-            typeof(LabeledButton), new PropertyMetadata(100));
+            typeof(LabeledButton), new PropertyMetadata(100.0));
         
         public string Label
         {
@@ -53,7 +57,7 @@ namespace LCARSToolkit.Controls
             switch (Direction)
             {
                 case FlowDirection.RightToLeft:
-                    SetColumnDefinitions((GetTemplateChild("root") as Grid).ColumnDefinitions, starAuto);
+                    SetColumnDefinitions((GetTemplateChild("root") as Grid)?.ColumnDefinitions, starAuto);
                     SetColumnDefinitions((GetTemplateChild("side") as Grid).ColumnDefinitions, autoStar);
                     Grid.SetColumn((GetTemplateChild("rect") as FrameworkElement), 1);
                     Grid.SetColumn((GetTemplateChild("viewbox") as FrameworkElement), 0);
@@ -118,7 +122,7 @@ namespace LCARSToolkit.Controls
         {
             try
             {
-                (this.GetTemplateChild("mask2") as Windows.UI.Xaml.Shapes.Rectangle).Fill = (isLit) ? new SolidColorBrush(Colors.Transparent) : new SolidColorBrush(Color.FromArgb(0x7F, 0x00, 0x00, 0x00));
+                (this.GetTemplateChild("mask2") as Rectangle).Fill = (isLit) ? new SolidColorBrush(Colors.Transparent) : new SolidColorBrush(Color.FromArgb(0x7F, 0x00, 0x00, 0x00));
                 (this.GetTemplateChild("mask") as Border).Background = (isLit) ? new SolidColorBrush(Colors.Transparent) : new SolidColorBrush(Color.FromArgb(0x7F, 0x00, 0x00, 0x00));
             }
             catch
