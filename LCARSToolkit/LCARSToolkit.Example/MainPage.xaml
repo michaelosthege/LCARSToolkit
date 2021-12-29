@@ -30,7 +30,7 @@
             </Grid.RowDefinitions>
 
             <!--Header-->
-            <lcars:Stump Grid.Column="0" Direction="Left" Diameter="50" Length="20" Fill="{StaticResource Static}" />
+            <lcars:Stump Grid.Column="0" Direction="Left" Diameter="50" Length="20" Fill="{StaticResource Static}" Margin="-3,0,0,0"/>
             <Grid Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -47,8 +47,8 @@
                     <ComboBox x:Name="cb1" />
                     <ComboBox x:Name="cb2" />
                     <ComboBox x:Name="cb3" />
-                    <lcars:LabeledButton Content="LabeledButton" SoundElement="{StaticResource Click01}" Label="123" Illumination="{Binding ElementName=cb3, Path=SelectedItem}" Background="{StaticResource Primary}" Direction="{Binding ElementName=cb1, Path=SelectedItem}" Stumps="{Binding ElementName=cb2, Path=SelectedItem}" Margin="0,10" />
-                    <lcars:LabeledButton Content="Button" SoundElement="{StaticResource Beep01}" Background="{StaticResource Primary}" Stumps="{Binding ElementName=cb2, Path=SelectedItem}" Margin="0,10" Illumination="{Binding ElementName=cb3, Path=SelectedItem}" />
+                    <lcars:LabeledButton Height="50" Width="400" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="LabeledButton" SoundElement="{StaticResource Click01}" Label="123" Illumination="{Binding ElementName=cb3, Path=SelectedItem}" Background="{StaticResource Primary}" Direction="{Binding ElementName=cb1, Path=SelectedItem}" Stumps="{Binding ElementName=cb2, Path=SelectedItem}" Margin="0,10" />
+                    <lcars:LabeledButton Height="50" Width="200" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="Button" SoundElement="{StaticResource Beep01}" Background="{StaticResource Primary}" Stumps="{Binding ElementName=cb2, Path=SelectedItem}" Margin="0,10" Illumination="{Binding ElementName=cb3, Path=SelectedItem}" />
                 </StackPanel>
             </Border>
 

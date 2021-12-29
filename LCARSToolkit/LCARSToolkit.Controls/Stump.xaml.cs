@@ -109,7 +109,7 @@ namespace LCARSToolkit.Controls
             switch (Direction)
             {
                 case Direction.Right:
-                    figure.StartPoint = new Point(0, 0);
+                    figure.StartPoint = new Point(-1, 0);
                     figure.Segments.Add(new LineSegment{Point = new Point(Length, 0)});
                     figure.Segments.Add(new ArcSegment
                     {
@@ -117,8 +117,8 @@ namespace LCARSToolkit.Controls
                         Point = new Point(Length, Diameter),
                         SweepDirection = SweepDirection.Clockwise
                     });
-                    figure.Segments.Add(new LineSegment{Point = new Point(0, Diameter)});
-                    figure.Segments.Add(new LineSegment{Point = new Point(0, 0)});
+                    figure.Segments.Add(new LineSegment{Point = new Point(-1, Diameter)});
+                    figure.Segments.Add(new LineSegment{Point = new Point(-1, 0)});
                     break;
                 case Direction.Left:
                     figure.StartPoint = new Point(Length + Diameter/2, 0);

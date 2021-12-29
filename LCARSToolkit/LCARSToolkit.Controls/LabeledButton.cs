@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using LCARSToolkit.Controls.Annotations;
 
 // using Windows.UI;
 // using Windows.UI.Xaml;
@@ -19,7 +23,6 @@ namespace LCARSToolkit.Controls
         {
             this.DefaultStyleKey = typeof(LabeledButton);
 
-            this.SizeChanged += (s,e) => UpdateCorners();
             // this.Click += (s,e) => SoundElement?.Play();
             // subscribe to the single, global FlashTimer such that everything flashes synchronously
             Extensions.FlashTimer.Tick += FlashTimer_Tick;
@@ -28,111 +31,89 @@ namespace LCARSToolkit.Controls
 
         public FlowDirection Direction
         {
-            get { return (FlowDirection)GetValue(DirectionProperty); }
-            set { SetValue(DirectionProperty, value); }
+            get => (FlowDirection)GetValue(DirectionProperty);
+            set => SetValue(DirectionProperty, value);
         }
         public static readonly DependencyProperty DirectionProperty = DependencyProperty.Register("Direction", typeof(FlowDirection), 
             typeof(LabeledButton), new PropertyMetadata(FlowDirection.LeftToRight, DirectionChanged));
         
         public double SideWidth
         {
-            get { return (double)GetValue(SideWidthProperty); }
-            set { SetValue(SideWidthProperty, value); }
+            get => (double)GetValue(SideWidthProperty);
+            set => SetValue(SideWidthProperty, value);
         }
         public static readonly DependencyProperty SideWidthProperty = DependencyProperty.Register("SideWidth", typeof(double), 
-            typeof(LabeledButton), new PropertyMetadata(100.0));
+            typeof(LabeledButton), new PropertyMetadata(10.0));
         
         public string Label
         {
-            get { return (string)GetValue(LabelProperty); }
-            set { SetValue(LabelProperty, value); }
+            get => (string)GetValue(LabelProperty);
+            set
+            {
+                SetValue(LabelProperty, value);
+            }
         }
         public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("Label", typeof(string), 
-            typeof(LabeledButton), new PropertyMetadata(string.Empty));
+            typeof(LabeledButton), new PropertyMetadata(string.Empty, LabelChanged));
+
+        private static void LabelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if(d is not LabeledButton button) return;
+
+            Debug.WriteLine($"UpdateLabel {e.OldValue} => {button.Label}");
+            button.LabelVisibility = string.IsNullOrEmpty(button.Label) ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        public double LabelSize
+        {
+            get => (double)GetValue(LabelSizeProperty);
+            set => SetValue(LabelSizeProperty, value);
+        }
+        public static readonly DependencyProperty LabelSizeProperty = DependencyProperty.Register("LabelSize", typeof(double), 
+            typeof(LabeledButton), new PropertyMetadata(60.0));
+
+        public Brush LabelColor
+        {
+            get => (Brush)GetValue(LabelColorProperty);
+            set => SetValue(LabelColorProperty, value);
+        }
+
+        public static readonly DependencyProperty LabelColorProperty = DependencyProperty.Register("LabelColor", typeof(Brush), 
+            typeof(LabeledButton), new PropertyMetadata(Brushes.DarkOrange));
+
+        public Visibility LabelVisibility
+        {
+            get => (Visibility)GetValue(LabelVisibilityProperty);
+            set => SetValue(LabelVisibilityProperty, value);
+        }
+
+        public static readonly DependencyProperty LabelVisibilityProperty = DependencyProperty.Register("LabelVisibility", typeof(Visibility), 
+            typeof(LabeledButton), new PropertyMetadata(Visibility.Collapsed));
 
         private static void DirectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as LabeledButton).SetColumns();
-            (d as LabeledButton).UpdateCorners();
-        }
-        
-        private void SetColumns()
-        {
-            var starAuto = new GridLength[] { new GridLength(1, GridUnitType.Star), GridLength.Auto };
-            var autoStar = starAuto.Reverse();
-            if (string.IsNullOrEmpty(Label))
+            if(d is not LabeledButton caller) return;
+            if(caller.GetTemplateChild("label") is not FrameworkElement label) return;
+            if(caller.GetTemplateChild("side") is not FrameworkElement side) return;
+
+            if (caller.Direction == FlowDirection.LeftToRight)
             {
-                (GetTemplateChild("viewbox") as FrameworkElement).Visibility = Visibility.Collapsed;
-                SetColumnDefinitions((GetTemplateChild("root") as Grid)?.ColumnDefinitions, new [] {GridLength.Auto});                
+                if (caller.GetTemplateChild("left") is Stump stump)
+                {
+                    DockPanel.SetDock(stump, Dock.Left);
+                }
+                DockPanel.SetDock(side, Dock.Left);
+                DockPanel.SetDock(label, Dock.Left);
             }
             else
             {
-                switch (Direction)
+                DockPanel.SetDock(side, Dock.Right);
+                if (caller.GetTemplateChild("right") is Stump stump)
                 {
-                    case FlowDirection.RightToLeft:
-                        SetColumnDefinitions((GetTemplateChild("root") as Grid)?.ColumnDefinitions, starAuto);
-                        SetColumnDefinitions((GetTemplateChild("side") as Grid).ColumnDefinitions, autoStar);
-                        Grid.SetColumn((GetTemplateChild("rect") as FrameworkElement), 1);
-                        Grid.SetColumn((GetTemplateChild("viewbox") as FrameworkElement), 0);
-                        Grid.SetColumn((GetTemplateChild("side") as FrameworkElement), 1);
-                        Grid.SetColumn((GetTemplateChild("RootGrid") as FrameworkElement), 0);
-                        break;
-                    case FlowDirection.LeftToRight:
-                        SetColumnDefinitions((GetTemplateChild("root") as Grid).ColumnDefinitions, autoStar);
-                        SetColumnDefinitions((GetTemplateChild("side") as Grid).ColumnDefinitions, starAuto);
-                        Grid.SetColumn((GetTemplateChild("rect") as FrameworkElement), 0);
-                        Grid.SetColumn((GetTemplateChild("viewbox") as FrameworkElement), 1);
-                        Grid.SetColumn((GetTemplateChild("side") as FrameworkElement), 0);
-                        Grid.SetColumn((GetTemplateChild("RootGrid") as FrameworkElement), 1);
-                        break;
+                    Debug.WriteLine("Right to Right");
+                    DockPanel.SetDock(stump, Dock.Right);
                 }
-            }
-        }
-
-        private void SetColumnDefinitions(ColumnDefinitionCollection coldefs, IEnumerable<GridLength> widths)
-        {
-            coldefs.Clear();
-            foreach (var item in widths)
-                coldefs.Add(new ColumnDefinition() { Width = item });
-        }
-
-        internal void UpdateCorners()
-        {
-            double radius = this.ActualHeight / 2;
-            CornerRadius roundRight = new CornerRadius(0, radius, radius, 0);
-            CornerRadius roundLeft = new CornerRadius(radius, 0, 0, radius);
-            CornerRadius notRound = new CornerRadius(0);
-             
-            Thickness padLeft = new Thickness(radius,0,5,0);
-            Thickness padRight = new Thickness(5,0,radius,0);
-            Thickness noPad = new Thickness(5,0,5,0);
-
-            var defaultStyle = Application.Current.TryFindResource(typeof(LabeledButton)) as Style;
-            var testStyle = Application.Current.TryFindResource("Test") as Style;
-            var rect = GetTemplateChild("rect") as Border;
-            if (rect == null) return;
-            switch (Stumps)
-            {
-                case Stumps.None:
-                    this.CornerRadius = new CornerRadius(0);
-                    this.Padding = new Thickness(5, 0, 5, 0);
-                    rect.CornerRadius = new CornerRadius(0);
-                    break;
-                case Stumps.Left:
-                    rect.CornerRadius = (Direction == FlowDirection.LeftToRight) ? roundLeft : notRound;
-                    this.CornerRadius = (Direction == FlowDirection.LeftToRight) ? notRound : roundLeft;
-                    this.Padding = (Direction == FlowDirection.RightToLeft) ? padLeft : noPad;
-                    break;
-                case Stumps.Right:
-                    rect.CornerRadius = (Direction == FlowDirection.RightToLeft) ? roundRight : notRound;
-                    this.CornerRadius = (Direction == FlowDirection.RightToLeft) ? notRound : roundRight;
-                    this.Padding = (Direction == FlowDirection.LeftToRight) ? padRight : noPad;
-                    break;
-                case Stumps.Both:
-                    rect.CornerRadius = (Direction == FlowDirection.LeftToRight) ? roundLeft : roundRight;
-                    this.CornerRadius = (Direction == FlowDirection.LeftToRight) ? roundRight : roundLeft;
-                    this.Padding = (Direction == FlowDirection.LeftToRight) ? padRight : padLeft;
-                    break;
+                DockPanel.SetDock(label, Dock.Right);
             }
         }
 
@@ -140,7 +121,6 @@ namespace LCARSToolkit.Controls
         {
             try
             {
-                (this.GetTemplateChild("mask2") as Rectangle).Fill = (isLit) ? new SolidColorBrush(Colors.Transparent) : new SolidColorBrush(Color.FromArgb(0x7F, 0x00, 0x00, 0x00));
                 (this.GetTemplateChild("mask") as Border).Background = (isLit) ? new SolidColorBrush(Colors.Transparent) : new SolidColorBrush(Color.FromArgb(0x7F, 0x00, 0x00, 0x00));
             }
             catch
@@ -160,10 +140,7 @@ namespace LCARSToolkit.Controls
         private bool _IsLit;
         public bool IsLit
         {
-            get
-            {
-                return _IsLit;
-            }
+            get => _IsLit;
             private set
             {
                 if (_IsLit != value)
@@ -176,18 +153,38 @@ namespace LCARSToolkit.Controls
 
         public Illumination Illumination
         {
-            get { return (Illumination)GetValue(IlluminationProperty); }
-            set { SetValue(IlluminationProperty, value); }
+            get => (Illumination)GetValue(IlluminationProperty);
+            set => SetValue(IlluminationProperty, value);
         }
 
         public static readonly DependencyProperty IlluminationProperty = 
             DependencyProperty.Register("Illumination", typeof(Illumination), typeof(LabeledButton), 
                 new PropertyMetadata(Illumination.On));
 
+        public Visibility LeftVisibility
+        {
+            get => (Visibility)GetValue(LeftVisibilityProperty);
+            set => SetValue(LeftVisibilityProperty, value);
+        }
+
+        public static readonly DependencyProperty LeftVisibilityProperty = 
+            DependencyProperty.Register("LeftVisibility", typeof(Visibility), typeof(LabeledButton), 
+                new PropertyMetadata(Visibility.Visible));
+
+        public Visibility RightVisibility
+        {
+            get => (Visibility)GetValue(RightVisibilityProperty);
+            set => SetValue(RightVisibilityProperty, value);
+        }
+
+        public static readonly DependencyProperty RightVisibilityProperty = 
+            DependencyProperty.Register("RightVisibility", typeof(Visibility), typeof(LabeledButton), 
+                new PropertyMetadata(Visibility.Visible));
+
         public Stumps Stumps
         {
-            get { return (Stumps)GetValue(StumpsProperty); }
-            set { SetValue(StumpsProperty, value); }
+            get => (Stumps)GetValue(StumpsProperty);
+            set => SetValue(StumpsProperty, value);
         }
 
         public static readonly DependencyProperty StumpsProperty = 
@@ -196,13 +193,19 @@ namespace LCARSToolkit.Controls
 
         private static void StumpsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as LabeledButton).UpdateCorners();
+            if(d is not LabeledButton button) return;
+
+            Debug.WriteLine($"UpdateStumps {e.OldValue} => {button.Stumps}");
+            button.LeftVisibility =
+                button.Stumps is Stumps.Both or Stumps.Left ? Visibility.Visible : Visibility.Collapsed;
+            button.RightVisibility =
+                button.Stumps is Stumps.Both or Stumps.Right ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public Corner ContentAlignment
         {
-            get { return (Corner)GetValue(ContentAlignmentProperty); }
-            set { SetValue(ContentAlignmentProperty, value); }
+            get => (Corner)GetValue(ContentAlignmentProperty);
+            set => SetValue(ContentAlignmentProperty, value);
         }
 
         public static readonly DependencyProperty ContentAlignmentProperty = 
@@ -211,16 +214,16 @@ namespace LCARSToolkit.Controls
 
         private static void ContentAlignmentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var btn = d as LabeledButton;
-            var value = btn.ContentAlignment;
-            btn.HorizontalContentAlignment = (value == Corner.TopLeft || value == Corner.BottomLeft) ? HorizontalAlignment.Left : HorizontalAlignment.Right;
-            btn.VerticalContentAlignment = (value == Corner.TopLeft || value == Corner.TopRight) ? VerticalAlignment.Top : VerticalAlignment.Bottom;
+            if(d is not LabeledButton button) return;
+            var value = button.ContentAlignment;
+            button.HorizontalContentAlignment = (value == Corner.TopLeft || value == Corner.BottomLeft) ? HorizontalAlignment.Left : HorizontalAlignment.Right;
+            button.VerticalContentAlignment = (value == Corner.TopLeft || value == Corner.TopRight) ? VerticalAlignment.Top : VerticalAlignment.Bottom;
         }
 
         public CornerRadius CornerRadius
         {
-            get { return (CornerRadius)GetValue(CornerRadiusProperty); }
-            set { SetValue(CornerRadiusProperty, value); }
+            get => (CornerRadius)GetValue(CornerRadiusProperty);
+            set => SetValue(CornerRadiusProperty, value);
         }
 
         public static readonly DependencyProperty CornerRadiusProperty = 
@@ -229,8 +232,8 @@ namespace LCARSToolkit.Controls
 
         public MediaElement SoundElement
         {
-            get { return (MediaElement)GetValue(SoundElementProperty); }
-            set { SetValue(SoundElementProperty, value); }
+            get => (MediaElement)GetValue(SoundElementProperty);
+            set => SetValue(SoundElementProperty, value);
         }
         public static readonly DependencyProperty SoundElementProperty = 
             DependencyProperty.Register(nameof(SoundElement), typeof(MediaElement), typeof(LabeledButton), 
