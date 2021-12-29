@@ -23,6 +23,11 @@ namespace LCARSToolkit.Controls
         {
             this.DefaultStyleKey = typeof(LabeledButton);
 
+            this.Click += (s, e) =>
+            {
+                if( s is not LabeledButton button) return;
+                Debug.WriteLine($"{button.Content}[{button.Label}] Pressed");
+            };
             // this.Click += (s,e) => SoundElement?.Play();
             // subscribe to the single, global FlashTimer such that everything flashes synchronously
             Extensions.FlashTimer.Tick += FlashTimer_Tick;

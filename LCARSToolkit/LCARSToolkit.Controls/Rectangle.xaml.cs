@@ -26,6 +26,15 @@ namespace LCARSToolkit.Controls
         public static readonly DependencyProperty FillProperty = 
             DependencyProperty.Register(nameof(Fill), typeof(Brush), typeof(Rectangle), new PropertyMetadata(null));
 
+        public Visibility MaskVisibility
+        {
+            get => (Visibility)GetValue(MaskVisibilityProperty);
+            set => SetValue(MaskVisibilityProperty, value);
+        }
+
+        public static readonly DependencyProperty MaskVisibilityProperty = 
+            DependencyProperty.Register(nameof(MaskVisibility), typeof(Visibility), typeof(Rectangle), new PropertyMetadata(Visibility.Collapsed));
+            
         private bool _isLit;
         public bool IsLit
         {
@@ -34,7 +43,7 @@ namespace LCARSToolkit.Controls
             {
                 if (_isLit != value)
                 {
-                    mask.Visibility = (value) ? Visibility.Collapsed : Visibility.Visible;
+                    MaskVisibility = (value) ? Visibility.Collapsed : Visibility.Visible;
                     _isLit = value;
                 }
             }

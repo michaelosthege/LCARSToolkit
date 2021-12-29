@@ -16,6 +16,9 @@
     <SolidColorBrush x:Key="Primary" Color="#99CCFF" />
     <SolidColorBrush x:Key="Yellow" Color="#FFFF33" />
     <SolidColorBrush x:Key="Orange" Color="#FF9900" />
+    <SolidColorBrush x:Key="Secondary" Color="#666666" />
+    <SolidColorBrush x:Key="Disabled" Color="#333333" />
+    <SolidColorBrush x:Key="DisabledText" Color="Gray" />
 
     <s:Double x:Key="ControlLabelFontSize">28</s:Double>
 
@@ -80,29 +83,25 @@
                                 </VisualState>
                                 <VisualState x:Name="Disabled">
                                     <Storyboard>
-                                        <!-- <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="rect"> -->
-                                        <!--     <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}"/> -->
-                                        <!-- </ObjectAnimationUsingKeyFrames> -->
-                                        <!-- <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="text"> -->
-                                        <!--     <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlDisabledBaseMediumLowBrush}"/> -->
-                                        <!-- </ObjectAnimationUsingKeyFrames> -->
-    
-                                        <!-- <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootGrid"> -->
-                                        <!--     <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}"/> -->
-                                        <!-- </ObjectAnimationUsingKeyFrames> -->
-                                        <!-- <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter"> -->
-                                        <!--     <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlDisabledBaseMediumLowBrush}"/> -->
-                                        <!-- </ObjectAnimationUsingKeyFrames> -->
-                                        <!-- <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ContentPresenter"> -->
-                                        <!--     <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlDisabledTransparentBrush}"/> -->
-                                        <!-- </ObjectAnimationUsingKeyFrames> -->
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="left">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Disabled}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="content">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Disabled}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="right">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Disabled}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="content">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource DisabledText}"/>
+                                        </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <lcars:Stump x:Name="left" HorizontalContentAlignment="Right" DockPanel.Dock="Left" Visibility="{TemplateBinding LeftVisibility}" Illumination="{TemplateBinding Illumination}" Diameter="{TemplateBinding ActualHeight}" Direction="Left" Fill="{TemplateBinding Background}"/>
-                        <lcars:Stump x:Name="right" HorizontalAlignment="Left" DockPanel.Dock="Right" Visibility="{TemplateBinding RightVisibility}" Illumination="{TemplateBinding Illumination}" Diameter="{TemplateBinding ActualHeight}" Direction="Right" Fill="{TemplateBinding Background}"/>
-                        <lcars:Rectangle x:Name="side" DockPanel.Dock="Left" Visibility="{TemplateBinding LabelVisibility}" Height="{TemplateBinding ActualHeight}" Width="{TemplateBinding SideWidth}" Fill="{TemplateBinding Background}"/>
+                        <lcars:Stump x:Name="left" DockPanel.Dock="Left" Visibility="{TemplateBinding LeftVisibility}" Illumination="{TemplateBinding Illumination}" Diameter="{TemplateBinding ActualHeight}" Direction="Left" Fill="{TemplateBinding Background}"/>
+                        <lcars:Stump x:Name="right" DockPanel.Dock="Right" Visibility="{TemplateBinding RightVisibility}" Illumination="{TemplateBinding Illumination}" Diameter="{TemplateBinding ActualHeight}" Direction="Right" Fill="{TemplateBinding Background}"/>
+                        <lcars:Rectangle x:Name="side" DockPanel.Dock="Left" Visibility="{TemplateBinding LabelVisibility}" Height="{TemplateBinding ActualHeight}" Width="{TemplateBinding SideWidth}" Illumination="{TemplateBinding Illumination}" Fill="{TemplateBinding Background}"/>
                         <Viewbox x:Name="label" DockPanel.Dock="Left" Stretch="Uniform" Margin="5,0" Visibility="{TemplateBinding LabelVisibility}">
                             <TextBlock x:Name="text"
                                        Text="{TemplateBinding Label}"
@@ -112,14 +111,15 @@
                                        VerticalAlignment="Center"
                                        LineStackingStrategy="BlockLineHeight"/>
                         </Viewbox>
-                        <Border x:Name="content" Background="{TemplateBinding Background}" BorderBrush="Blue" Padding="0">
-                            <ContentPresenter Margin="5,0"
-                                              x:Name="ContentPresenter"
-                                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                                              Content="{TemplateBinding Content}"
-                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        </Border>
+                        <lcars:Rectangle x:Name="content"
+                                         Content="{TemplateBinding Content}"
+                                         Height="{TemplateBinding ActualHeight}"
+                                         Illumination="{TemplateBinding Illumination}"
+                                         Fill="{TemplateBinding Background}"
+                                         Foreground="{TemplateBinding Foreground}"
+                                         HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                         VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
+                        </lcars:Rectangle>
                     </DockPanel>
                 </ControlTemplate>
             </Setter.Value>
