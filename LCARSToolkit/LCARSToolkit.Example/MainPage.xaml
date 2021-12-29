@@ -1,4 +1,6 @@
 ﻿<Window
+    WindowStyle="None"
+    Margin="0"
     x:Class="LCARSToolkit.Example.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -42,19 +44,11 @@
             <!--Content-->
             <Border Grid.Row="1" Grid.Column="1" BorderBrush="DarkGray" BorderThickness="1">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <lcars:Elbo Column="20" Bar="40" InnerArcRadius="10" Fill="{StaticResource Static}" />
-                        <lcars:Elbo Corner="TopRight" Column="20" Bar="40" InnerArcRadius="10" Fill="{StaticResource Static}" />
-                    </StackPanel>
                     <ComboBox x:Name="cb1" />
                     <ComboBox x:Name="cb2" />
                     <ComboBox x:Name="cb3" />
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <lcars:Elbo Corner="BottomLeft" Column="20" Bar="40" InnerArcRadius="10" Fill="{StaticResource Static}" />
-                        <lcars:Elbo Corner="BottomRight" Column="20" Bar="40" InnerArcRadius="10" Fill="{StaticResource Static}" />
-                    </StackPanel>
-                    <!-- <lcars:LabeledButton Content="LabeledButton" SoundElement="{StaticResource Click01}" Label="123" Illumination="{Binding ElementName=cb3, Path=SelectedItem}" Background="{StaticResource Primary}" Direction="{Binding ElementName=cb1, Path=SelectedItem}" Stumps="{Binding ElementName=cb2, Path=SelectedItem}" Margin="0,10" /> -->
-                    <!-- <lcars:Button Content="Button" SoundElement="{StaticResource Beep01}" Background="{StaticResource Primary}" Stumps="{Binding ElementName=cb2, Path=SelectedItem}" Margin="0,10" Illumination="{Binding ElementName=cb3, Path=SelectedItem}" /> -->
+                    <lcars:LabeledButton Content="LabeledButton" SoundElement="{StaticResource Click01}" Label="123" Illumination="{Binding ElementName=cb3, Path=SelectedItem}" Background="{StaticResource Primary}" Direction="{Binding ElementName=cb1, Path=SelectedItem}" Stumps="{Binding ElementName=cb2, Path=SelectedItem}" Margin="0,10" />
+                    <lcars:LabeledButton Content="Button" SoundElement="{StaticResource Beep01}" Background="{StaticResource Primary}" Stumps="{Binding ElementName=cb2, Path=SelectedItem}" Margin="0,10" Illumination="{Binding ElementName=cb3, Path=SelectedItem}" />
                 </StackPanel>
             </Border>
 
@@ -65,9 +59,9 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Vertical" Grid.Row="0">
-                    <lcars:Button Content="ENVIRONMENT" SoundElement="{StaticResource Click01}" Stumps="None" Height="120" Width="200" HorizontalAlignment="Right" Margin="0,10,0,5" ContentAlignment="BottomRight" Background="{StaticResource Unavailable}" />
-                    <lcars:Button Content="LANGUAGE" Stumps="None" Height="60" Width="200" HorizontalAlignment="Right" Margin="0,5,0,5" ContentAlignment="BottomRight" />
-                    <lcars:Button Content="DISABLED" Stumps="None" Height="60" IsEnabled="False" Width="200" HorizontalAlignment="Right" Margin="0,5,0,10" ContentAlignment="BottomRight" />
+                    <lcars:LabeledButton Content="ENVIRONMENT" SoundElement="{StaticResource Click01}" Stumps="None" Height="120" Width="200" HorizontalAlignment="Right" Margin="0,10,0,5" ContentAlignment="BottomRight" Background="{StaticResource Unavailable}" />
+                    <lcars:LabeledButton Content="LANGUAGE" Stumps="None" Height="60" Width="200" HorizontalAlignment="Right" Margin="0,5,0,5" ContentAlignment="BottomRight" />
+                    <lcars:LabeledButton Content="DISABLED" Stumps="None" Height="60" IsEnabled="False" Width="200" HorizontalAlignment="Right" Margin="0,5,0,10" ContentAlignment="BottomRight" />
                 </StackPanel>
                 <lcars:Rectangle Grid.Row="1" Width="200" HorizontalAlignment="Right" Fill="{StaticResource Static}" Illumination="{Binding ElementName=cb3, Path=SelectedItem}" />
             </Grid>

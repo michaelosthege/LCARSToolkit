@@ -3,120 +3,127 @@
     xmlns:s="clr-namespace:System;assembly=mscorlib"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:LCARSToolkit.Controls"
-    xmlns:controls="clr-namespace:LCARSToolkit.Controls">
+    xmlns:lcars="clr-namespace:LCARSToolkit.Controls">
 
     <!--The user will define a FontFamily with Key LCARS, because we can't provide the ttf with the package.-->
     <!--<FontFamily x:Key="LCARS">Resources/lcars.ttf#LCARS</FontFamily>-->
+    <FontFamily x:Key="LCARS">Swiss921 BT</FontFamily>
     <SolidColorBrush x:Key="ButtonPressedBrush" Color="White" />
     <SolidColorBrush x:Key="ControlLabelBrush" Color="Black" />
+    <SolidColorBrush x:Key="Static" Color="#F1DF6F" />
+    <SolidColorBrush x:Key="Offline" Color="#FF0000" />
+    <SolidColorBrush x:Key="Unavailable" Color="#3399FF" />
+    <SolidColorBrush x:Key="Primary" Color="#99CCFF" />
+    <SolidColorBrush x:Key="Yellow" Color="#FFFF33" />
     <SolidColorBrush x:Key="Orange" Color="#FF9900" />
+
     <s:Double x:Key="ControlLabelFontSize">28</s:Double>
 
-    <Style TargetType="controls:Button">
-        <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}"/>
-        <Setter Property="Foreground" Value="{DynamicResource ControlLabelBrush}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundTransparentBrush}"/>
-        <Setter Property="BorderThickness" Value="{DynamicResource ButtonBorderThemeThickness}"/>
-        <Setter Property="Padding" Value="8,4,8,4"/>
-        <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="FontFamily" Value="{StaticResource LCARS}"/>
-        <Setter Property="FontWeight" Value="Normal"/>
-        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}"/>
-        <!-- <Setter Property="UseSystemFocusVisuals" Value="True"/> -->
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="controls:Button">
-                    <Border CornerRadius="{TemplateBinding CornerRadius}" x:Name="RootGrid" Background="{TemplateBinding Background}">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal">
-                                    <Storyboard>
-                                        <!-- <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/> -->
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="PointerOver">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ContentPresenter">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlHighlightBaseMediumLowBrush}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlHighlightBaseHighBrush}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <!-- <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/> -->
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Pressed">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootGrid">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource ButtonPressedBrush}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ContentPresenter">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlHighlightTransparentBrush}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource ControlLabelBrush}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <!--<PointerDownThemeAnimation Storyboard.TargetName="RootGrid"/>-->
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Disabled">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootGrid">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlDisabledBaseMediumLowBrush}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ContentPresenter">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlDisabledTransparentBrush}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                            </VisualStateGroup>
-                            <!--<VisualStateGroup x:Name="IlluminationStates">
-                                    <VisualState x:Name="On"/>
-                                    <VisualState x:Name="Off">
-                                        <Storyboard>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="mask" Storyboard.TargetProperty="Background">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#7F000000" />
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                    <VisualState x:Name="Flashing">
-                                        <Storyboard>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="mask" Storyboard.TargetProperty="Background" Duration="0:0:1" RepeatBehavior="Forever">
-                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Transparent" />
-                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="#7F000000" />
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                </VisualStateGroup>-->
-                        </VisualStateManager.VisualStateGroups>
-                        <Border x:Name="mask" CornerRadius="{TemplateBinding CornerRadius}">
-                            <!-- <ContentPresenter FontSize="{DynamicResource ControlLabelFontSize}" Border.CornerRadius="{TemplateBinding CornerRadius}" x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" Border.Brush="{TemplateBinding BorderBrush}" Border.Thickness="{TemplateBinding BorderThickness}" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/> -->
-                        </Border>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+    <!-- <Style TargetType="controls:Button"> -->
+    <!--     <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}"/> -->
+    <!--     <Setter Property="Foreground" Value="{DynamicResource ControlLabelBrush}"/> -->
+    <!--     <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundTransparentBrush}"/> -->
+    <!--     <Setter Property="BorderThickness" Value="{DynamicResource ButtonBorderThemeThickness}"/> -->
+    <!--     <Setter Property="Padding" Value="8,4,8,4"/> -->
+    <!--     <Setter Property="HorizontalAlignment" Value="Left"/> -->
+    <!--     <Setter Property="VerticalAlignment" Value="Center"/> -->
+    <!--     <Setter Property="FontFamily" Value="{StaticResource LCARS}"/> -->
+    <!--     <Setter Property="FontWeight" Value="Normal"/> -->
+    <!--     <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}"/> -->
+    <!--     ~1~ <Setter Property="UseSystemFocusVisuals" Value="True"/> @1@ -->
+    <!--     <Setter Property="Template"> -->
+    <!--         <Setter.Value> -->
+    <!--             <ControlTemplate TargetType="controls:Button"> -->
+    <!--                 <Border CornerRadius="{TemplateBinding CornerRadius}" x:Name="RootGrid" Background="{TemplateBinding Background}"> -->
+    <!--                     <VisualStateManager.VisualStateGroups> -->
+    <!--                         <VisualStateGroup x:Name="CommonStates"> -->
+    <!--                             <VisualState x:Name="Normal"> -->
+    <!--                                 <Storyboard> -->
+    <!--                                     ~1~ <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/> @1@ -->
+    <!--                                 </Storyboard> -->
+    <!--                             </VisualState> -->
+    <!--                             <VisualState x:Name="PointerOver"> -->
+    <!--                                 <Storyboard> -->
+    <!--                                     <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ContentPresenter"> -->
+    <!--                                         <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlHighlightBaseMediumLowBrush}"/> -->
+    <!--                                     </ObjectAnimationUsingKeyFrames> -->
+    <!--                                     <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter"> -->
+    <!--                                         <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlHighlightBaseHighBrush}"/> -->
+    <!--                                     </ObjectAnimationUsingKeyFrames> -->
+    <!--                                     ~1~ <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/> @1@ -->
+    <!--                                 </Storyboard> -->
+    <!--                             </VisualState> -->
+    <!--                             <VisualState x:Name="Pressed"> -->
+    <!--                                 <Storyboard> -->
+    <!--                                     <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootGrid"> -->
+    <!--                                         <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource ButtonPressedBrush}"/> -->
+    <!--                                     </ObjectAnimationUsingKeyFrames> -->
+    <!--                                     <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ContentPresenter"> -->
+    <!--                                         <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlHighlightTransparentBrush}"/> -->
+    <!--                                     </ObjectAnimationUsingKeyFrames> -->
+    <!--                                     <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter"> -->
+    <!--                                         <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource ControlLabelBrush}"/> -->
+    <!--                                     </ObjectAnimationUsingKeyFrames> -->
+    <!--                                     ~1~<PointerDownThemeAnimation Storyboard.TargetName="RootGrid"/>@1@ -->
+    <!--                                 </Storyboard> -->
+    <!--                             </VisualState> -->
+    <!--                             <VisualState x:Name="Disabled"> -->
+    <!--                                 <Storyboard> -->
+    <!--                                     <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootGrid"> -->
+    <!--                                         <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}"/> -->
+    <!--                                     </ObjectAnimationUsingKeyFrames> -->
+    <!--                                     <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter"> -->
+    <!--                                         <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlDisabledBaseMediumLowBrush}"/> -->
+    <!--                                     </ObjectAnimationUsingKeyFrames> -->
+    <!--                                     <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ContentPresenter"> -->
+    <!--                                         <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlDisabledTransparentBrush}"/> -->
+    <!--                                     </ObjectAnimationUsingKeyFrames> -->
+    <!--                                 </Storyboard> -->
+    <!--                             </VisualState> -->
+    <!--                         </VisualStateGroup> -->
+    <!--                         <VisualStateGroup x:Name="IlluminationStates"> -->
+    <!--                                 <VisualState x:Name="On"/> -->
+    <!--                                 <VisualState x:Name="Off"> -->
+    <!--                                     <Storyboard> -->
+    <!--                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="mask" Storyboard.TargetProperty="Background"> -->
+    <!--                                             <DiscreteObjectKeyFrame KeyTime="0" Value="#7F000000" /> -->
+    <!--                                         </ObjectAnimationUsingKeyFrames> -->
+    <!--                                     </Storyboard> -->
+    <!--                                 </VisualState> -->
+    <!--                                 <VisualState x:Name="Flashing"> -->
+    <!--                                     <Storyboard> -->
+    <!--                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="mask" Storyboard.TargetProperty="Background" Duration="0:0:1" RepeatBehavior="Forever"> -->
+    <!--                                             <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Transparent" /> -->
+    <!--                                             <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="#7F000000" /> -->
+    <!--                                         </ObjectAnimationUsingKeyFrames> -->
+    <!--                                     </Storyboard> -->
+    <!--                                 </VisualState> -->
+    <!--                             </VisualStateGroup>-->
+    <!--                     </VisualStateManager.VisualStateGroups> -->
+    <!--                     <Border x:Name="mask" CornerRadius="{TemplateBinding CornerRadius}"> -->
+    <!--                         ~1~ <ContentPresenter FontSize="{DynamicResource ControlLabelFontSize}" Border.CornerRadius="{TemplateBinding CornerRadius}" x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" Border.Brush="{TemplateBinding BorderBrush}" Border.Thickness="{TemplateBinding BorderThickness}" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/> @1@ -->
+    <!--                     </Border> -->
+    <!--                 </Border> -->
+    <!--             </ControlTemplate> -->
+    <!--         </Setter.Value> -->
+    <!--     </Setter> -->
+    <!-- </Style> -->
 
-    <Style TargetType="controls:LabeledButton">
-        <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}"/>
-        <Setter Property="Foreground" Value="{DynamicResource ControlLabelBrush}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundTransparentBrush}"/>
-        <Setter Property="BorderThickness" Value="{DynamicResource ButtonBorderThemeThickness}"/>
+    <Style TargetType="lcars:LabeledButton">
+        <Setter Property="Background" Value="{StaticResource Static}"/>
+        <Setter Property="Foreground" Value="{StaticResource ControlLabelBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Static}"/>
+        <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Padding" Value="8,4,8,4"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="FontFamily" Value="{StaticResource LCARS}"/>
         <Setter Property="FontWeight" Value="Normal"/>
-        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}"/>
+        <Setter Property="FontSize" Value="{StaticResource ControlLabelFontSize}"/>
         <!-- <Setter Property="UseSystemFocusVisuals" Value="True"/> -->
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="controls:LabeledButton">
+                <ControlTemplate TargetType="lcars:LabeledButton">
                     <Grid x:Name="root">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
@@ -130,13 +137,13 @@
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="rect">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlHighlightBaseMediumLowBrush}"/>
                                         </ObjectAnimationUsingKeyFrames>
-
-                                        <!--<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ContentPresenter">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlHighlightBaseMediumLowBrush}"/>
-                                        </ObjectAnimationUsingKeyFrames>-->
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlHighlightBaseHighBrush}"/>
-                                        </ObjectAnimationUsingKeyFrames>
+    
+                                        <!-- <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ContentPresenter"> -->
+                                        <!--     <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlHighlightBaseMediumLowBrush}"/> -->
+                                        <!-- </ObjectAnimationUsingKeyFrames> -->
+                                        <!-- <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter"> -->
+                                        <!--     <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlHighlightBaseHighBrush}"/> -->
+                                        <!-- </ObjectAnimationUsingKeyFrames> -->
                                         <!--<PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/>-->
                                     </Storyboard>
                                 </VisualState>
@@ -145,19 +152,19 @@
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="rect">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource ButtonPressedBrush}"/>
                                         </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="text">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource ButtonPressedBrush}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-
+                                        <!-- <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="text"> -->
+                                        <!--     <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource ButtonPressedBrush}"/> -->
+                                        <!-- </ObjectAnimationUsingKeyFrames> -->
+    
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootGrid">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource ButtonPressedBrush}"/>
                                         </ObjectAnimationUsingKeyFrames>
-                                        <!--<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ContentPresenter">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlHighlightTransparentBrush}"/>
-                                        </ObjectAnimationUsingKeyFrames>-->
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource ControlLabelBrush}"/>
-                                        </ObjectAnimationUsingKeyFrames>
+                                        <!-- <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ContentPresenter"> -->
+                                        <!--     <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlHighlightTransparentBrush}"/> -->
+                                        <!-- </ObjectAnimationUsingKeyFrames> -->
+                                        <!-- <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter"> -->
+                                        <!--     <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource ControlLabelBrush}"/> -->
+                                        <!-- </ObjectAnimationUsingKeyFrames> -->
                                         <!--<PointerDownThemeAnimation Storyboard.TargetName="RootGrid"/>-->
                                     </Storyboard>
                                 </VisualState>
@@ -166,28 +173,31 @@
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="rect">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}"/>
                                         </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="text">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlDisabledBaseMediumLowBrush}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-
+                                        <!-- <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="text"> -->
+                                        <!--     <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlDisabledBaseMediumLowBrush}"/> -->
+                                        <!-- </ObjectAnimationUsingKeyFrames> -->
+    
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootGrid">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}"/>
                                         </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlDisabledBaseMediumLowBrush}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <!--<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ContentPresenter">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlDisabledTransparentBrush}"/>
-                                        </ObjectAnimationUsingKeyFrames>-->
+                                        <!-- <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter"> -->
+                                        <!--     <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlDisabledBaseMediumLowBrush}"/> -->
+                                        <!-- </ObjectAnimationUsingKeyFrames> -->
+                                        <!-- <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ContentPresenter"> -->
+                                        <!--     <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource SystemControlDisabledTransparentBrush}"/> -->
+                                        <!-- </ObjectAnimationUsingKeyFrames> -->
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-
+    
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
+                        <!-- <lcars:Stump Grid.Column="0" Direction="Left" Diameter="{TemplateBinding Height}" Fill="White"/> -->
+                        <!-- <lcars:Stump Grid.Column="1" Direction="Right" Diameter="{TemplateBinding Height}" Fill="White"/> -->
+                        <!-- <lcars:Stump Direction="Right" Diameter="{TemplateBinding Height}" Fill="{TemplateBinding Background}"/> -->
                         <Grid x:Name="side" Grid.Column="0" Width="{TemplateBinding SideWidth}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -195,13 +205,36 @@
                             </Grid.ColumnDefinitions>
                             <Border x:Name="rect" Background="{TemplateBinding Background}" Grid.Column="0" Height="{TemplateBinding Height}" />
                             <Viewbox x:Name="viewbox" Grid.Column="1" Stretch="Uniform" Margin="5,0">
-                                <TextBlock x:Name="text" Text="{TemplateBinding Label}" FontFamily="{StaticResource LCARS}" FontSize="60" Foreground="{StaticResource Orange}"/> <!--TextLineBounds="Tight" Margin="0,1" />-->
+                                <TextBlock x:Name="text"
+                                           Text="{TemplateBinding Label}"
+                                           FontFamily="{StaticResource LCARS}"
+                                           FontSize="60" Foreground="{StaticResource Orange}"
+                                           VerticalAlignment="Center"
+                                           LineStackingStrategy="BlockLineHeight"
+                                           LineHeight="40"/>
                             </Viewbox>
                             <Rectangle x:Name="mask2" Grid.ColumnSpan="2" />
                         </Grid>
                         <Border Grid.Column="1" CornerRadius="{TemplateBinding CornerRadius}" x:Name="RootGrid" Background="{TemplateBinding Background}">
                             <Border x:Name="mask" CornerRadius="{TemplateBinding CornerRadius}">
-                                <!-- <ContentPresenter FontSize="{DynamicResource ControlLabelFontSize}" CornerRadius="{TemplateBinding CornerRadius}" x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/> -->
+                                <ContentPresenter
+                                    x:Name="ContentPresenter"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                    Content="{TemplateBinding Content}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                <!-- <ContentPresenter -->
+                                <!--     FontSize="{DynamicResource ControlLabelFontSize}" -->
+                                <!--     CornerRadius="{TemplateBinding CornerRadius}" -->
+                                <!--     x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" -->
+                                <!--     BorderBrush="{TemplateBinding BorderBrush}" -->
+                                <!--     BorderThickness="{TemplateBinding BorderThickness}" -->
+                                <!--     ContentTemplate="{TemplateBinding ContentTemplate}" -->
+                                <!--     ContentTransitions="{TemplateBinding ContentTransitions}" -->
+                                <!--     Content="{TemplateBinding Content}" -->
+                                <!--     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" -->
+                                <!--     Padding="{TemplateBinding Padding}" -->
+                                <!--     VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/> -->
                             </Border>
                         </Border>
                     </Grid>

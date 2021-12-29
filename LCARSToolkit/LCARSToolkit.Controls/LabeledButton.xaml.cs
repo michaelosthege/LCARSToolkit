@@ -3,29 +3,17 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-
-// using Windows.UI;
-// using Windows.UI.Xaml;
-// using Windows.UI.Xaml.Controls;
-// using Windows.UI.Xaml.Media;
-
-// The Templated Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234235
+using SButton = System.Windows.Controls.Button;
 
 namespace LCARSToolkit.Controls
 {
-    public sealed class LabeledButton : Button
+    public partial class LabeledButton : Button
     {
         public LabeledButton()
         {
-            this.DefaultStyleKey = typeof(LabeledButton);
-
-            this.SizeChanged += (s,e) => UpdateCorners();
-            // this.Click += (s,e) => SoundElement?.Play();
-            // subscribe to the single, global FlashTimer such that everything flashes synchronously
-            Extensions.FlashTimer.Tick += FlashTimer_Tick;
-            this.Unloaded += Button_Unloaded;
+            InitializeComponent();
         }
-
+        
         public FlowDirection Direction
         {
             get { return (FlowDirection)GetValue(DirectionProperty); }
@@ -60,32 +48,24 @@ namespace LCARSToolkit.Controls
         {
             var starAuto = new GridLength[] { new GridLength(1, GridUnitType.Star), GridLength.Auto };
             var autoStar = starAuto.Reverse();
-            if (string.IsNullOrEmpty(Label))
+            switch (Direction)
             {
-                (GetTemplateChild("viewbox") as FrameworkElement).Visibility = Visibility.Collapsed;
-                SetColumnDefinitions((GetTemplateChild("root") as Grid)?.ColumnDefinitions, new [] {GridLength.Auto});                
-            }
-            else
-            {
-                switch (Direction)
-                {
-                    case FlowDirection.RightToLeft:
-                        SetColumnDefinitions((GetTemplateChild("root") as Grid)?.ColumnDefinitions, starAuto);
-                        SetColumnDefinitions((GetTemplateChild("side") as Grid).ColumnDefinitions, autoStar);
-                        Grid.SetColumn((GetTemplateChild("rect") as FrameworkElement), 1);
-                        Grid.SetColumn((GetTemplateChild("viewbox") as FrameworkElement), 0);
-                        Grid.SetColumn((GetTemplateChild("side") as FrameworkElement), 1);
-                        Grid.SetColumn((GetTemplateChild("RootGrid") as FrameworkElement), 0);
-                        break;
-                    case FlowDirection.LeftToRight:
-                        SetColumnDefinitions((GetTemplateChild("root") as Grid).ColumnDefinitions, autoStar);
-                        SetColumnDefinitions((GetTemplateChild("side") as Grid).ColumnDefinitions, starAuto);
-                        Grid.SetColumn((GetTemplateChild("rect") as FrameworkElement), 0);
-                        Grid.SetColumn((GetTemplateChild("viewbox") as FrameworkElement), 1);
-                        Grid.SetColumn((GetTemplateChild("side") as FrameworkElement), 0);
-                        Grid.SetColumn((GetTemplateChild("RootGrid") as FrameworkElement), 1);
-                        break;
-                }
+                case FlowDirection.RightToLeft:
+                    SetColumnDefinitions((GetTemplateChild("root") as Grid)?.ColumnDefinitions, starAuto);
+                    SetColumnDefinitions((GetTemplateChild("side") as Grid).ColumnDefinitions, autoStar);
+                    Grid.SetColumn((GetTemplateChild("rect") as FrameworkElement), 1);
+                    Grid.SetColumn((GetTemplateChild("viewbox") as FrameworkElement), 0);
+                    Grid.SetColumn((GetTemplateChild("side") as FrameworkElement), 1);
+                    Grid.SetColumn((GetTemplateChild("RootGrid") as FrameworkElement), 0);
+                    break;
+                case FlowDirection.LeftToRight:
+                    SetColumnDefinitions((GetTemplateChild("root") as Grid).ColumnDefinitions, autoStar);
+                    SetColumnDefinitions((GetTemplateChild("side") as Grid).ColumnDefinitions, starAuto);
+                    Grid.SetColumn((GetTemplateChild("rect") as FrameworkElement), 0);
+                    Grid.SetColumn((GetTemplateChild("viewbox") as FrameworkElement), 1);
+                    Grid.SetColumn((GetTemplateChild("side") as FrameworkElement), 0);
+                    Grid.SetColumn((GetTemplateChild("RootGrid") as FrameworkElement), 1);
+                    break;
             }
         }
 
@@ -98,7 +78,7 @@ namespace LCARSToolkit.Controls
 
         internal void UpdateCorners()
         {
-            double radius = this.ActualHeight / 2;
+            var radius = this.ActualHeight / 2;
             CornerRadius roundRight = new CornerRadius(0, radius, radius, 0);
             CornerRadius roundLeft = new CornerRadius(radius, 0, 0, radius);
             CornerRadius notRound = new CornerRadius(0);
@@ -106,33 +86,29 @@ namespace LCARSToolkit.Controls
             Thickness padLeft = new Thickness(radius,0,5,0);
             Thickness padRight = new Thickness(5,0,radius,0);
             Thickness noPad = new Thickness(5,0,5,0);
-
-            var defaultStyle = Application.Current.TryFindResource(typeof(LabeledButton)) as Style;
-            var testStyle = Application.Current.TryFindResource("Test") as Style;
-            var rect = GetTemplateChild("rect") as Border;
-            if (rect == null) return;
+            
             switch (Stumps)
             {
-                case Stumps.None:
-                    this.CornerRadius = new CornerRadius(0);
-                    this.Padding = new Thickness(5, 0, 5, 0);
-                    rect.CornerRadius = new CornerRadius(0);
-                    break;
-                case Stumps.Left:
-                    rect.CornerRadius = (Direction == FlowDirection.LeftToRight) ? roundLeft : notRound;
-                    this.CornerRadius = (Direction == FlowDirection.LeftToRight) ? notRound : roundLeft;
-                    this.Padding = (Direction == FlowDirection.RightToLeft) ? padLeft : noPad;
-                    break;
-                case Stumps.Right:
-                    rect.CornerRadius = (Direction == FlowDirection.RightToLeft) ? roundRight : notRound;
-                    this.CornerRadius = (Direction == FlowDirection.RightToLeft) ? notRound : roundRight;
-                    this.Padding = (Direction == FlowDirection.LeftToRight) ? padRight : noPad;
-                    break;
-                case Stumps.Both:
-                    rect.CornerRadius = (Direction == FlowDirection.LeftToRight) ? roundLeft : roundRight;
-                    this.CornerRadius = (Direction == FlowDirection.LeftToRight) ? roundRight : roundLeft;
-                    this.Padding = (Direction == FlowDirection.LeftToRight) ? padRight : padLeft;
-                    break;
+                // case Stumps.None:
+                //     // this.CornerRadius = new CornerRadius(0);
+                //     this.Padding = new Thickness(5, 0, 5, 0);
+                //     (GetTemplateChild("rect") as Border).CornerRadius = new CornerRadius(0);
+                //     break;
+                // case Stumps.Left:
+                //     (GetTemplateChild("rect") as Border).CornerRadius = (Direction == FlowDirection.LeftToRight) ? roundLeft : notRound;
+                //     // this.CornerRadius = (Direction == FlowDirection.LeftToRight) ? notRound : roundLeft;
+                //     this.Padding = (Direction == FlowDirection.RightToLeft) ? padLeft : noPad;
+                //     break;
+                // case Stumps.Right:
+                //     (GetTemplateChild("rect") as Border).CornerRadius = (Direction == FlowDirection.RightToLeft) ? roundRight : notRound;
+                //     // this.CornerRadius = (Direction == FlowDirection.RightToLeft) ? notRound : roundRight;
+                //     this.Padding = (Direction == FlowDirection.LeftToRight) ? padRight : noPad;
+                //     break;
+                // case Stumps.Both:
+                //     (GetTemplateChild("rect") as Border).CornerRadius = (Direction == FlowDirection.LeftToRight) ? roundLeft : roundRight;
+                //     // this.CornerRadius = (Direction == FlowDirection.LeftToRight) ? roundRight : roundLeft;
+                //     this.Padding = (Direction == FlowDirection.LeftToRight) ? padRight : padLeft;
+                //     break;
             }
         }
 
@@ -146,7 +122,6 @@ namespace LCARSToolkit.Controls
             catch
             { }            
         }
-
        private void FlashTimer_Tick(object sender, object e)
         {
             IsLit = (Illumination == Illumination.Flashing) ? !IsLit : (Illumination == Illumination.On);
@@ -181,7 +156,7 @@ namespace LCARSToolkit.Controls
         }
 
         public static readonly DependencyProperty IlluminationProperty = 
-            DependencyProperty.Register("Illumination", typeof(Illumination), typeof(LabeledButton), 
+            DependencyProperty.Register("Illumination", typeof(Illumination), typeof(Button), 
                 new PropertyMetadata(Illumination.On));
 
         public Stumps Stumps
@@ -191,7 +166,7 @@ namespace LCARSToolkit.Controls
         }
 
         public static readonly DependencyProperty StumpsProperty = 
-            DependencyProperty.Register("Stumps", typeof(Stumps), typeof(LabeledButton), 
+            DependencyProperty.Register("Stumps", typeof(Stumps), typeof(Button), 
                 new PropertyMetadata(Stumps.Both, StumpsChanged));
 
         private static void StumpsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -206,13 +181,13 @@ namespace LCARSToolkit.Controls
         }
 
         public static readonly DependencyProperty ContentAlignmentProperty = 
-            DependencyProperty.Register("ContentAlignment", typeof(Corner), typeof(LabeledButton), new PropertyMetadata(Corner.BottomLeft,
+            DependencyProperty.Register("ContentAlignment", typeof(Corner), typeof(Button), new PropertyMetadata(Corner.BottomLeft,
                 ContentAlignmentChanged));
 
         private static void ContentAlignmentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var btn = d as LabeledButton;
-            var value = btn.ContentAlignment;
+            Corner value = btn.ContentAlignment;
             btn.HorizontalContentAlignment = (value == Corner.TopLeft || value == Corner.BottomLeft) ? HorizontalAlignment.Left : HorizontalAlignment.Right;
             btn.VerticalContentAlignment = (value == Corner.TopLeft || value == Corner.TopRight) ? VerticalAlignment.Top : VerticalAlignment.Bottom;
         }
@@ -224,7 +199,7 @@ namespace LCARSToolkit.Controls
         }
 
         public static readonly DependencyProperty CornerRadiusProperty = 
-            DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(LabeledButton), 
+            DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(Button), 
                 new PropertyMetadata(null));
 
         public MediaElement SoundElement
@@ -233,7 +208,7 @@ namespace LCARSToolkit.Controls
             set { SetValue(SoundElementProperty, value); }
         }
         public static readonly DependencyProperty SoundElementProperty = 
-            DependencyProperty.Register(nameof(SoundElement), typeof(MediaElement), typeof(LabeledButton), 
+            DependencyProperty.Register(nameof(SoundElement), typeof(MediaElement), typeof(Button), 
                 new PropertyMetadata(null));
     }
 }

@@ -6,19 +6,15 @@
     StartupUri="MainPage.xaml">
 
     <Application.Resources>
-        <!--App-wide setting of the desired font family-->
-        <FontFamily x:Key="LCARS">Swiss921 BT</FontFamily>
-        <!--the 'real' LCARS font is called Swiss 911 Ultra Compressed. Unfortunately it is copyrighted. But if you do have a copy:-->
-        <!--<FontFamily x:Key="LCARS">Resources/Swiss 911 Ultra Compressed.ttf#LCARS</FontFamily>-->
-
-        <SolidColorBrush x:Key="Static" Color="#F1DF6F" />
-        <SolidColorBrush x:Key="Offline" Color="#FF0000" />
-        <SolidColorBrush x:Key="Unavailable" Color="#3399FF" />
-        <SolidColorBrush x:Key="Primary" Color="#99CCFF" />
-        <SolidColorBrush x:Key="Yellow" Color="#FFFF33" />
-        <SolidColorBrush x:Key="Orange" Color="#FF9900" />
-
-        <!--MediaElements need to be part of the Visual Tree to work. That's why we can't put them in App.Resources-->
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/LCARSToolkit.Controls;component/Themes/Generic.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <!--App-wide setting of the desired font family-->
+            <!--the 'real' LCARS font is called Swiss 911 Ultra Compressed. Unfortunately it is copyrighted. But if you do have a copy:-->
+            <!--<FontFamily x:Key="LCARS">Resources/Swiss 911 Ultra Compressed.ttf#LCARS</FontFamily>-->
+            <!--MediaElements need to be part of the Visual Tree to work. That's why we can't put them in App.Resources-->
+        </ResourceDictionary>
     </Application.Resources>
 
 </Application>
