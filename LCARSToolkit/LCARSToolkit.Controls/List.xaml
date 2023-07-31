@@ -1,0 +1,34 @@
+﻿<UserControl
+    x:Class="LCARSToolkit.Controls.List"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:LCARSToolkit.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    x:Name="control"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Grid>
+        <ListView IsItemClickEnabled="True" x:Name="list" SelectionMode="Single">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="local:LCARSListItem">
+                    <Grid Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <local:Stump Illumination="{x:Bind Illumination, Mode=TwoWay}" Grid.Column="0" Length="20" Diameter="50" Fill="{Binding ElementName=control,Path=ItemFill,Mode=TwoWay}" Direction="Left"/>
+                        <local:Rectangle Grid.Column="1" Height="50" Illumination="{x:Bind Illumination, Mode=TwoWay}" Fill="{Binding ElementName=control,Path=ItemFill,Mode=TwoWay}"/>
+                        <Grid Grid.Column="1" Height="50">
+                            <TextBlock Text="{x:Bind Text, Mode=TwoWay}" FontSize="30" Foreground="{Binding ElementName=control,Path=ItemTextColor,Mode=TwoWay}" FontFamily="{StaticResource LCARS}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                        </Grid>
+                        <local:Stump Illumination="{x:Bind Illumination, Mode=TwoWay}" Grid.Column="2" Length="20" Diameter="50" Fill="{Binding ElementName=control,Path=ItemFill,Mode=TwoWay}" Direction="Right"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>

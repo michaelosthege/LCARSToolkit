@@ -49,6 +49,7 @@
                     <ComboBox x:Name="cb3" Header="Illumination" />
                     <lcars:LabeledButton Content="LabeledButton" SoundElement="{StaticResource Click01}" Label="123" Illumination="{Binding ElementName=cb3, Path=SelectedItem}" Background="{StaticResource Primary}" Direction="{Binding ElementName=cb1, Path=SelectedItem}" Stumps="{Binding ElementName=cb2, Path=SelectedItem}" Margin="0,10" />
                     <lcars:Button Content="Button" SoundElement="{StaticResource Beep01}" Background="{StaticResource Primary}" Stumps="{Binding ElementName=cb2, Path=SelectedItem}" Margin="0,10" Illumination="{Binding ElementName=cb3, Path=SelectedItem}" />
+                    <lcars:List ItemClicked="lst_ItemClicked" x:Name="lst" SoundElement="{StaticResource Beep01}" ItemFill="{StaticResource Static}" ItemTextColor="Black"/>
                 </StackPanel>
             </Border>
 
@@ -71,7 +72,6 @@
             <lcars:Stump Grid.Column="0" Grid.Row="2" Direction="Left" Diameter="30" Length="30" VerticalAlignment="Bottom" Fill="{StaticResource Static}" Illumination="{Binding ElementName=cb3, Path=SelectedItem}" />
             <lcars:Rectangle Height="30" Grid.Column="1" Grid.Row="2" VerticalAlignment="Bottom" Fill="{StaticResource Static}" Illumination="{Binding ElementName=cb3, Path=SelectedItem}" />
             <lcars:Elbo Grid.Row="2" Grid.Column="2" Column="200" Bar="30" Corner="BottomRight" InnerArcRadius="30" HorizontalAlignment="Right" Fill="{StaticResource Static}" Illumination="{Binding ElementName=cb3, Path=SelectedItem}" />
-
         </Grid>
     </Grid>
 
