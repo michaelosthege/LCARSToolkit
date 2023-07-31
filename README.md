@@ -30,8 +30,9 @@ At the moment there are four controls:
 * **Button**: inherits the standard Button and adds illumination/flashing and Stumps
 * **LabeledButton**: see screenshot. Was a nightmare to build. Supports LeftToRight and RightToLeft flow directions and Stumps on either end.
 * **Rectangle** : well guess what. (for illumination of rectangles in the layout)
+* **List** : uses the standard ListView to create a better looking list. Should only be filled with instances of LCARSListItem.
 
-All controls have an Illumination property and can flash in synchrony.
+All controls have an Illumination property and can flash in synchrony, the **List** control has Illumination for each item. You can access it by changing the Illumination property of the LCARSListItem.
 
 
 ### Font & Colors
