@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml;
+﻿using System.Globalization;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Media;
@@ -91,20 +92,21 @@ namespace LCARSToolkit.Controls
         private void UpdatePath()
         {
             string geo = string.Empty;
+            CultureInfo formatLanguage = new CultureInfo("en-US");
 
             switch (Direction)
             {
                 case Direction.Right:
-                    geo = $"M0,0 l{Length},0 a {Diameter/2},{Diameter/2} 180 0 1 0,{Diameter} l {-Length},0 z";
+                    geo = $"M0,0 l{Length.ToString(formatLanguage)},0 a {(Diameter/2).ToString(formatLanguage)},{(Diameter/2).ToString(formatLanguage)} 180 0 1 0,{Diameter.ToString(formatLanguage)} l {(-Length).ToString(formatLanguage)},0 z";
                     break;
                 case Direction.Left:
-                    geo = $"M{Length+Diameter/2},0 l{-Length},0 a {Diameter / 2},{Diameter / 2} 180 0 0 0,{Diameter} l {Length},0 z";
+                    geo = $"M{(Length+Diameter/2).ToString(formatLanguage)},0 l{(-Length).ToString(formatLanguage)},0 a {(Diameter / 2).ToString(formatLanguage)},{(Diameter / 2).ToString(formatLanguage)} 180 0 0 0,{Diameter.ToString(formatLanguage)} l {Length.ToString(formatLanguage)},0 z";
                     break;
                 case Direction.Up:
-                    geo = $"M0,{Length+Diameter/2} l0,{-Length} a {Diameter / 2},{Diameter / 2} 180 0 0 {Diameter},0 l 0,{Length} z";
+                    geo = $"M0,{(Length+Diameter/2).ToString(formatLanguage)} l0,{(-Length).ToString(formatLanguage)} a {(Diameter / 2).ToString(formatLanguage)},{(Diameter / 2).ToString(formatLanguage)} 180 0 0 {Diameter.ToString(formatLanguage)},0 l 0,{Length.ToString(formatLanguage)} z";
                     break;
                 case Direction.Down:
-                    geo = $"M0,0 l0,{Length} a {Diameter / 2},{Diameter / 2} 180 0 1 {Diameter},0 l 0,{-Length} z";
+                    geo = $"M0,0 l0,{Length.ToString(formatLanguage)} a {(Diameter / 2).ToString(formatLanguage)},{(Diameter / 2).ToString(formatLanguage)} 180 0 1 {Diameter.ToString(formatLanguage)},0 l 0,{(-Length).ToString(formatLanguage)} z";
                     break;
             }
             path.Data = (Geometry)XamlReader.Load($"<Geometry xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'>{geo}</Geometry>");

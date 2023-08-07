@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -107,6 +108,8 @@ namespace LCARSToolkit.Controls
             double small = InnerArcRadius;
 
             string geo = string.Empty;
+
+            CultureInfo formatLanguage = new CultureInfo("en-US");
             // Geometry syntax ()
             // m = start(x,y)
             // a = arc(sizeXY, angle, isLargerThan180, sweepDirection, endXY)
@@ -115,16 +118,16 @@ namespace LCARSToolkit.Controls
             switch (Corner)
             {
                 case Corner.TopLeft:
-                    geo = $"M0,{Bar+small} l{Column},0 a {small},{small} 90 0 1 {small},{-small} l 0,{-Bar} l {-Column - small + big},0 a {big},{big} 90 0 0 {-big},{big} z";
+                    geo = $"M0,{(Bar+small).ToString(formatLanguage)} l{Column.ToString(formatLanguage)},0 a {small.ToString(formatLanguage)},{small.ToString(formatLanguage)} 90 0 1 {small.ToString(formatLanguage)},{(-small).ToString(formatLanguage)} l 0,{(-Bar).ToString(formatLanguage)} l {(-Column - small + big).ToString(formatLanguage)},0 a {big.ToString(formatLanguage)},{big.ToString(formatLanguage)} 90 0 0 {(-big).ToString(formatLanguage)},{big.ToString(formatLanguage)} z";
                     break;
                 case Corner.TopRight:
-                    geo = $"M{Column + small},{Bar + small} l{-Column},0 a {small},{small} 90 0 0 {-small},{-small} l 0,{-Bar} l {Column + small - big},0 a {big},{big} 90 0 1 {big},{big} z";
+                    geo = $"M{(Column + small).ToString(formatLanguage)},{(Bar+small).ToString(formatLanguage)} l{(-Column).ToString(formatLanguage)},0 a {small.ToString(formatLanguage)},{small.ToString(formatLanguage)} 90 0 0 {(-small).ToString(formatLanguage)},{(-small).ToString(formatLanguage)} l 0,{(-Bar).ToString(formatLanguage)} l {(Column + small - big).ToString(formatLanguage)},0 a {big.ToString(formatLanguage)},{big.ToString(formatLanguage)} 90 0 1 {big.ToString(formatLanguage)},{big.ToString(formatLanguage)} z";
                     break;
                 case Corner.BottomRight:
-                    geo = $"M{Column+small},0 l{-Column},0 a {small},{small} 90 0 1 {-small},{small} l 0,{Bar} l {Column + small - big},0 a {big},{big} 90 0 0 {big},{-big} z";
+                    geo = $"M{(Column+small).ToString(formatLanguage)},0 l{(-Column).ToString(formatLanguage)},0 a {small.ToString(formatLanguage)},{small.ToString(formatLanguage)} 90 0 1 {(-small).ToString(formatLanguage)},{small.ToString(formatLanguage)} l 0,{Bar.ToString(formatLanguage)} l {(Column + small - big).ToString(formatLanguage)},0 a {big.ToString(formatLanguage)},{big.ToString(formatLanguage)} 90 0 0 {big.ToString(formatLanguage)},{(-big).ToString(formatLanguage)} z";
                     break;
                 case Corner.BottomLeft:
-                    geo = $"M0,0 l{Column},0 a {small},{small} 90 0 0 {small},{small} l 0,{Bar} l {-Column - small + big},0 a {big},{big} 90 0 1 {-big},{-big} z";
+                    geo = $"M0,0 l{Column.ToString(formatLanguage)},0 a {small.ToString(formatLanguage)},{small.ToString(formatLanguage)} 90 0 0 {small.ToString(formatLanguage)},{small.ToString(formatLanguage)} l 0,{Bar.ToString(formatLanguage)} l {(-Column - small + big).ToString(formatLanguage)},0 a {big.ToString(formatLanguage)},{big.ToString(formatLanguage)} 90 0 1 {(-big).ToString(formatLanguage)},{(-big).ToString(formatLanguage)} z";
                     break;
             }
             path.Data = (Geometry)XamlReader.Load($"<Geometry xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'>{geo}</Geometry>");

@@ -4,9 +4,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+
 using TCD.Controls;
+
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -30,6 +33,15 @@ namespace LCARSToolkit.Example
             cb1.SetUpItems(FlowDirection.LeftToRight);
             cb2.SetUpItems(Stumps.Both);
             cb3.SetUpItems(Illumination.On);
+            lst.Items.Add(new LCARSListItem("Item 1"));
+            lst.Items.Add(new LCARSListItem("Flashing Item 2", Illumination.Flashing));
+            lst.Items.Add(new LCARSListItem("Item 3"));
+        }
+
+        private void lst_ItemClicked(object sender, ItemClickEventArgs e)
+        {
+            var item = (e.ClickedItem as LCARSListItem);
+            new MessageDialog($"You clicked {item.Text}!").ShowAsync();
         }
     }
 }
