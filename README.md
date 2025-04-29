@@ -59,7 +59,7 @@ The 'real' LCARS font is called *Swiss 911 Ultra Compressed* and copyrighted, so
 ```
 
 ### Sounds
-This repository does not contain sound samples to avoid legal complications. You can [grab the original sounds from lcarscom.net](http://www.lcarscom.net/sounds.htm). Should this link ever die, don't hesitate to contact me for a backup ;)
+This repository does not contain sound samples to avoid legal complications. You can [grab the original sounds from lcarscom.net](https://web.archive.org/web/20190715170721/http://www.lcarscom.net/sounds.htm). Should this link ever die, don't hesitate to contact me for a backup ;)
 
 If you know a source of nice-sounding click an beep sounds under a permissive license, please contribute a link!
 
